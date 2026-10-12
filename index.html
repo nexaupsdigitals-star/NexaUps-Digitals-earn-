@@ -3,375 +3,466 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#09111f">
 <title>NexaUps Digitals Earn</title>
 <style>
-:root{--bg:#09111f;--panel:#131f32;--green:#00e5a0;--text:#f4f7ff;--muted:#aab8cc}
+:root {
+  --bg:#09111f; --panel:#121e31; --line:#26364d;
+  --green:#00dfa0; --text:#f4f7fb; --muted:#a6b4c8;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:16px Arial,sans-serif}
-header{padding:22px;background:#101b2d;border-bottom:1px solid #293951}
-.brand{font-size:24px;font-weight:bold}.brand span{color:var(--green)}
-p{color:var(--muted);line-height:1.5}
-main{max-width:720px;margin:auto;padding:18px}
-.card{background:var(--panel);border:1px solid #293951;border-radius:16px;padding:20px;margin-bottom:16px}
-input,button{width:100%;padding:14px;margin:7px 0;border-radius:10px;font-size:16px}
-input{background:#0a1425;border:1px solid #354660;color:white}
-button{background:var(--green);border:0;color:#071b15;font-weight:bold}
-button:disabled{opacity:.5}
-.secondary{background:#283951;color:white}
-.notice{background:#202f45;border-radius:10px;padding:13px;overflow-wrap:anywhere}
+body{margin:0;background:var(--bg);color:var(--text);
+font-family:Arial,sans-serif;line-height:1.55}
+header{padding:24px 18px;background:#101b2d;border-bottom:1px solid var(--line)}
+header h1{font-size:25px;margin:0}
+header h1 span{color:var(--green)}
+header p{color:var(--muted);margin:7px 0 0}
+main{max-width:850px;margin:auto;padding:20px 15px 50px}
+.card{background:var(--panel);border:1px solid var(--line);
+border-radius:18px;padding:19px;margin-bottom:16px}
+h2{font-size:20px;margin:0 0 12px}
+h3{font-size:17px;margin:0 0 8px}
+p{overflow-wrap:anywhere}
+.muted,.hint{color:var(--muted);font-size:14px}
+input,select{width:100%;padding:13px;margin:7px 0 12px;
+border-radius:10px;border:1px solid var(--line);
+background:#091321;color:white;font-size:16px}
+button,.btn{border:0;border-radius:10px;padding:12px 15px;
+background:var(--green);color:#062117;font-weight:bold;
+font-size:15px;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+.secondary{background:#24334a;color:white}
+.danger{background:#542e3a;color:white}
+button.full{width:100%}
+.row{display:flex;gap:9px;flex-wrap:wrap}
+.row>*{flex:1}
+.nav{display:flex;gap:8px;overflow-x:auto;margin-bottom:16px}
+.nav button{white-space:nowrap;flex:1}
 .hidden{display:none!important}
-nav{display:flex;gap:6px;flex-wrap:wrap}
-nav button{flex:1;min-width:75px;font-size:13px}
-.hero{background:linear-gradient(130deg,#086e5d,#153c60)}
-.balance{font-size:32px;font-weight:bold}
-.question{padding:12px;background:#0a1425;border-radius:10px;margin:10px 0}
+.statgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.stat{background:#0b1627;border:1px solid var(--line);padding:15px;border-radius:13px}
+.stat strong{display:block;font-size:24px;color:var(--green);overflow-wrap:anywhere}
+.stat small{color:var(--muted)}
+.question{padding:14px 0;border-bottom:1px solid var(--line)}
+.question:last-child{border-bottom:0}
+.question label{display:block;padding:7px 0}
+.question input{width:auto;margin:0 7px 0 0}
+#notice{padding:12px;border-radius:10px;margin-bottom:14px;display:none}
+#notice.show{display:block;background:#193b36;color:#caffed}
+#notice.error{background:#492b32;color:#ffe1e4}
+footer{text-align:center;color:var(--muted);padding:22px;font-size:13px}
+a{color:var(--green);overflow-wrap:anywhere}
+.smallbtn{padding:8px 10px;font-size:13px}
+@media(max-width:480px){header h1{font-size:22px}.card{padding:15px}.stat strong{font-size:21px}}
 </style>
 </head>
 <body>
+
 <header>
- <div class="brand">NexaUps <span>Digitals Earn</span></div>
- <p>Learn • Refer • Grow</p>
+  <h1>NexaUps <span>Digitals Earn</span></h1>
+  <p>Learn • Refer • Grow</p>
 </header>
+
 <main>
-<div id="setup" class="card">
- <h2>Connecting NexaUps Earn</h2>
- <p id="setupMsg">Checking Firebase connection…</p>
-</div>
+  <div id="notice" role="status"></div>
 
-<section id="auth" class="card hidden">
- <h2>Welcome to NexaUps Earn</h2>
- <div id="registerFields">
-  <h3>Create account</h3>
-  <input id="name" placeholder="Full name" autocomplete="name">
-  <input id="phone" type="tel" placeholder="Phone number">
-  <input id="email" type="email" placeholder="Gmail address" autocomplete="email">
-  <input id="password" type="password" placeholder="Password (minimum 8 characters)" autocomplete="new-password">
-  <input id="refCode" placeholder="Referral code (optional)">
-  <button id="registerBtn">Register</button>
-  <button class="secondary" id="showLogin">Already registered? Log in</button>
- </div>
- <div id="loginFields" class="hidden">
-  <h3>Log in</h3>
-  <input id="loginEmail" type="email" placeholder="Gmail address">
-  <input id="loginPassword" type="password" placeholder="Password">
-  <button id="loginBtn">Log in</button>
-  <button class="secondary" id="showRegister">Create account</button>
-  <button class="secondary" id="resetBtn">Reset password</button>
- </div>
- <div id="authMsg" class="notice hidden"></div>
-</section>
+  <section id="authSection" class="card">
+    <h2 id="authTitle">Welcome to NexaUps</h2>
+    <p class="muted">Create an account or log in to access your dashboard.</p>
 
-<section id="dashboard" class="hidden">
- <div class="card">Welcome, <strong id="userName"></strong><p id="userEmail"></p></div>
- <nav>
-  <button data-tab="wallet">Wallet</button>
-  <button data-tab="referrals">Refer</button>
-  <button data-tab="tasks">Questions</button>
-  <button data-tab="withdraw">Withdraw</button>
-  <button id="logoutBtn" class="secondary">Log out</button>
- </nav>
- <section id="wallet" class="tab">
-  <div class="card hero"><p>Wallet balance</p><div class="balance" id="balance">KSh 0</div></div>
-  <div class="card"><h3>Wallet activity</h3><div id="ledger">No transactions yet.</div></div>
- </section>
- <section id="referrals" class="tab hidden">
-  <div class="card">
-   <h2>Invite friends</h2><p>Your referral code</p><div class="notice" id="myCode"></div>
-   <input id="refLink" readonly>
-   <button id="copyCode">Copy referral link</button>
-   <p>Advertised eligible referral reward: KSh 150.</p>
-   <p>Referrals: <strong id="refCount">0</strong></p>
-  </div>
- </section>
- <section id="tasks" class="tab hidden">
-  <div class="card">
-   <h2>Mind questions 🧠</h2><p id="taskProgress">Completed: 0 / 5</p>
-   <div id="questions"></div><div id="taskMsg" class="notice">Choose an answer.</div>
-   <h3>Extra questions</h3><p id="extraStatus">Locked until the first five are complete.</p>
-   <div id="extras"></div>
-  </div>
- </section>
- <section id="withdraw" class="tab hidden">
-  <div class="card">
-   <h2>Withdrawal request</h2><p>Minimum: KSh 2,000</p>
-   <p>Available balance: <strong id="withdrawBalance">KSh 0</strong></p>
-   <input id="amount" type="number" min="2000" placeholder="Amount in KSh">
-   <input id="payoutPhone" type="tel" placeholder="M-Pesa phone number">
-   <button id="withdrawBtn">Submit request</button>
-   <div id="withdrawMsg" class="notice hidden"></div>
-   <h3>Request history</h3><div id="withdrawals">No requests.</div>
-  </div>
- </section>
-</section>
-<footer style="text-align:center;padding:20px;color:#aab8cc">© NexaUps Digitals Earn</footer>
+    <form id="authForm">
+      <div id="nameField">
+        <label for="fullName">Full name</label>
+        <input id="fullName" maxlength="80" autocomplete="name"
+          placeholder="Enter your name">
+      </div>
+
+      <label for="email">Email address</label>
+      <input id="email" type="email" required autocomplete="email"
+        placeholder="you@example.com">
+
+      <label for="password">Password</label>
+      <input id="password" type="password" required minlength="6"
+        autocomplete="current-password" placeholder="At least 6 characters">
+
+      <button id="authSubmit" class="full" type="submit">Create account</button>
+    </form>
+
+    <p class="muted" id="switchText">Already registered?</p>
+    <button id="switchAuth" class="secondary full" type="button">Log in instead</button>
+    <p class="hint">Use an email you can access. Your password is handled by Firebase Authentication.</p>
+  </section>
+
+  <section id="appSection" class="hidden">
+    <div class="card">
+      <h2>Welcome, <span id="userName">Member</span> 👋</h2>
+      <p class="muted">Your NexaUps member dashboard.</p>
+      <div class="statgrid">
+        <div class="stat"><small>Available points</small><strong id="points">0</strong></div>
+        <div class="stat"><small>Referral code</small><strong id="refCount">Ready</strong></div>
+      </div>
+      <p class="hint">Points have no cash value unless a real rewards programme and its terms are established. Only verified server-side rewards can increase your balance.</p>
+    </div>
+
+    <nav class="nav" aria-label="Dashboard sections">
+      <button type="button" data-page="home">Home</button>
+      <button type="button" data-page="questions" class="secondary">Questions</button>
+      <button type="button" data-page="referrals" class="secondary">Refer</button>
+      <button type="button" data-page="wallet" class="secondary">Wallet</button>
+    </nav>
+
+    <section id="page-home" class="card">
+      <h2>Getting started 🚀</h2>
+      <p>Welcome to NexaUps Digitals Earn. Complete learning questions, share your referral link, and check your account activity.</p>
+      <p class="muted">Question answers are saved to your account. This starter version does not automatically award points or make payments.</p>
+      <button type="button" class="full" data-goto="questions">Start questions</button>
+    </section>
+
+    <section id="page-questions" class="card hidden">
+      <h2>Learning questions 🧠</h2>
+      <p class="muted">Choose one answer per question, then submit. These are learning activities, not guaranteed paid tasks.</p>
+      <form id="quizForm">
+        <div class="question">
+          <h3>1. What does HTML do?</h3>
+          <label><input type="radio" name="q1" value="a" required> Structures web page content</label>
+          <label><input type="radio" name="q1" value="b"> Charges a phone battery</label>
+          <label><input type="radio" name="q1" value="c"> Creates internet data</label>
+        </div>
+        <div class="question">
+          <h3>2. Which password is strongest?</h3>
+          <label><input type="radio" name="q2" value="a" required> 123456</label>
+          <label><input type="radio" name="q2" value="b"> A long, unique password</label>
+          <label><input type="radio" name="q2" value="c"> Your first name</label>
+        </div>
+        <div class="question">
+          <h3>3. What is Firebase Authentication used for?</h3>
+          <label><input type="radio" name="q3" value="a" required> User sign-in and identity</label>
+          <label><input type="radio" name="q3" value="b"> Charging a bank account</label>
+          <label><input type="radio" name="q3" value="c"> Designing a phone case</label>
+        </div>
+        <div class="question">
+          <h3>4. What should you do with your account password?</h3>
+          <label><input type="radio" name="q4" value="a" required> Share it with everyone</label>
+          <label><input type="radio" name="q4" value="b"> Reuse it on every site</label>
+          <label><input type="radio" name="q4" value="c"> Keep it private and unique</label>
+        </div>
+        <div class="question">
+          <h3>5. What is a referral link?</h3>
+          <label><input type="radio" name="q5" value="a" required> A link used to invite another person</label>
+          <label><input type="radio" name="q5" value="b"> A guaranteed payment receipt</label>
+          <label><input type="radio" name="q5" value="c"> A password reset code</label>
+        </div>
+        <button class="full" type="submit">Submit answers</button>
+      </form>
+      <div id="quizResult" class="hint" aria-live="polite"></div>
+    </section>
+
+    <section id="page-referrals" class="card hidden">
+      <h2>Invite friends 🤝</h2>
+      <p>Share your personal link with people who may be interested in NexaUps.</p>
+      <label for="refLink">Your referral link</label>
+      <input id="refLink" readonly>
+      <button id="copyRef" type="button" class="full">Copy referral link</button>
+      <p class="hint">This starter records a referral code on a new account, but does not verify referrals or pay referral bonuses. A secure backend is needed for that.</p>
+    </section>
+
+    <section id="page-wallet" class="card hidden">
+      <h2>Points wallet 💳</h2>
+      <p>Available points: <strong id="walletPoints">0</strong></p>
+      <p class="muted">A withdrawal request is only a request. It does not send money automatically.</p>
+      <form id="withdrawForm">
+        <label for="withdrawAmount">Points to request</label>
+        <input id="withdrawAmount" type="number" min="1" step="1" required placeholder="Enter points">
+        <label for="paymentMethod">Preferred payment method</label>
+        <select id="paymentMethod" required>
+          <option value="">Choose method</option>
+          <option value="M-Pesa">M-Pesa</option>
+          <option value="Bank transfer">Bank transfer</option>
+        </select>
+        <label for="paymentDetails">Payment details</label>
+        <input id="paymentDetails" required maxlength="120"
+          placeholder="Enter your payment number or details">
+        <button class="full" type="submit">Submit withdrawal request</button>
+      </form>
+      <p class="hint">Only submit payment details to a service you trust. This form stores your request in Firebase; it does not initiate an M-Pesa or bank payment.</p>
+      <h3>My recent requests</h3>
+      <div id="withdrawHistory" class="muted">No requests loaded.</div>
+    </section>
+
+    <section class="card">
+      <p class="muted">Signed in as <span id="userEmail"></span></p>
+      <button id="logout" class="danger full" type="button">Log out</button>
+    </section>
+  </section>
 </main>
 
-<script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import {
- getAuth,onAuthStateChanged,createUserWithEmailAndPassword,
- signInWithEmailAndPassword,sendPasswordResetEmail,signOut
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {
- getFirestore,doc,getDoc,collection,query,where,orderBy,limit,getDocs
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-import {getFunctions,httpsCallable} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js";
+<footer>© <span id="year"></span> NexaUps Digitals Earn</footer>
 
-/* ===== YOUR REAL FIREBASE WEB CONFIGURATION ===== */
+<!-- Firebase compat SDKs: suitable for a single HTML file -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
 const firebaseConfig = {
- apiKey: "AIzaSyDvIQeEEHyC9IRYY-MAH9swGAaley4fqNM",
- authDomain: "nexaups-digitals-earn.firebaseapp.com",
- projectId: "nexaups-digitals-earn",
- storageBucket: "nexaups-digitals-earn.firebasestorage.app",
- messagingSenderId: "163765409667",
- appId: "1:163765409667:web:af90581a1fd98fd12388b6",
- measurementId: "G-S2K6TD8VHJ"
+  apiKey: "AIzaSyDvIQeEEHyC9IRYY-MAH9swGAaley4fqNM",
+  authDomain: "nexaups-digitals-earn.firebaseapp.com",
+  projectId: "nexaups-digitals-earn",
+  storageBucket: "nexaups-digitals-earn.firebasestorage.app",
+  messagingSenderId: "163765409667",
+  appId: "1:163765409667:web:af90581a1fd98fd12388b6",
+  measurementId: "G-S2K6TD8VHJ"
 };
 
-const $=id=>document.getElementById(id);
-function msg(id,text){
- $(id).textContent=text;
- $(id).classList.remove("hidden");
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const serverTime = () => firebase.firestore.FieldValue.serverTimestamp();
+
+let isRegister = true;
+let currentUser = null;
+let currentProfile = null;
+let profileListener = null;
+let withdrawalListener = null;
+
+const $ = id => document.getElementById(id);
+
+function notice(message, error=false) {
+  const el = $("notice");
+  el.textContent = message;
+  el.className = "show" + (error ? " error" : "");
+  window.scrollTo({top:0,behavior:"smooth"});
 }
-function errorText(e){
- const code=e?.code||"";
- const known={
-  "auth/email-already-in-use":"This email already has an account. Please log in.",
-  "auth/invalid-email":"Please enter a valid email address.",
-  "auth/weak-password":"Choose a stronger password.",
-  "auth/invalid-credential":"Email or password is incorrect.",
-  "auth/operation-not-allowed":"Enable Email/Password in Firebase Authentication.",
-  "permission-denied":"Firebase security rules are blocking this action.",
-  "functions/not-found":"The required backend function has not been deployed.",
-  "functions/unavailable":"Backend unavailable. Try again later."
- };
- return known[code]||e?.message||"Something went wrong. Please try again.";
+function clearNotice() {
+  $("notice").className = "";
+  $("notice").textContent = "";
 }
+function safeText(value) {
+  return String(value == null ? "" : value);
+}
+function setAuthMode(register) {
+  isRegister = register;
+  $("authTitle").textContent = register ? "Create your account" : "Welcome back";
+  $("nameField").classList.toggle("hidden", !register);
+  $("fullName").required = register;
+  $("password").autocomplete = register ? "new-password" : "current-password";
+  $("authSubmit").textContent = register ? "Create account" : "Log in";
+  $("switchText").textContent = register ? "Already registered?" : "New to NexaUps?";
+  $("switchAuth").textContent = register ? "Log in instead" : "Create an account";
+}
+$("switchAuth").addEventListener("click", () => setAuthMode(!isRegister));
 
-try{
- const app=initializeApp(firebaseConfig);
- const auth=getAuth(app);
- const db=getFirestore(app);
- const functions=getFunctions(app,"us-central1");
+$("authForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  clearNotice();
+  const email = $("email").value.trim();
+  const password = $("password").value;
+  const name = $("fullName").value.trim();
 
- /* These functions must exist in your deployed Firebase backend. */
- const registerProfile=httpsCallable(functions,"registerProfile");
- const answerQuestion=httpsCallable(functions,"answerQuestion");
- const requestWithdrawal=httpsCallable(functions,"requestWithdrawal");
-
- $("setupMsg").textContent="Firebase initialized. Checking account services…";
-
- $("showLogin").onclick=()=>{
-  $("registerFields").classList.add("hidden");
-  $("loginFields").classList.remove("hidden");
- };
- $("showRegister").onclick=()=>{
-  $("loginFields").classList.add("hidden");
-  $("registerFields").classList.remove("hidden");
- };
-
- $("registerBtn").onclick=async()=>{
-  const name=$("name").value.trim();
-  const phone=$("phone").value.trim();
-  const email=$("email").value.trim().toLowerCase();
-  const password=$("password").value;
-  const refCode=($("refCode").value.trim()||
-    new URLSearchParams(location.search).get("ref")||"").toUpperCase();
-
-  if(name.length<2)return msg("authMsg","Enter your full name.");
-  if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))
-   return msg("authMsg","Enter a valid phone number.");
-  if(!/^[^\s@]+@gmail\.com$/i.test(email))
-   return msg("authMsg","Enter a valid Gmail address.");
-  if(password.length<8)
-   return msg("authMsg","Password must contain at least 8 characters.");
-
-  $("registerBtn").disabled=true;
-  try{
-   const credential=await createUserWithEmailAndPassword(auth,email,password);
-   await registerProfile({name,phone,refCode});
-   await refresh();
-   msg("authMsg","Account created.");
-  }catch(e){
-   msg("authMsg","Registration: "+errorText(e));
-  }finally{$("registerBtn").disabled=false;}
- };
-
- $("loginBtn").onclick=async()=>{
-  $("loginBtn").disabled=true;
-  try{
-   await signInWithEmailAndPassword(auth,
-    $("loginEmail").value.trim(),$("loginPassword").value);
-  }catch(e){msg("authMsg",errorText(e));}
-  finally{$("loginBtn").disabled=false;}
- };
- $("resetBtn").onclick=async()=>{
-  try{
-   await sendPasswordResetEmail(auth,$("loginEmail").value.trim());
-   msg("authMsg","Password reset email sent. Check your inbox.");
-  }catch(e){msg("authMsg",errorText(e));}
- };
- $("logoutBtn").onclick=()=>signOut(auth);
-
- document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{
-  document.querySelectorAll(".tab").forEach(t=>t.classList.add("hidden"));
-  $(b.dataset.tab).classList.remove("hidden");
- });
-
- $("copyCode").onclick=async()=>{
-  try{
-   await navigator.clipboard.writeText($("refLink").value);
-   msg("taskMsg","Referral link copied.");
-  }catch{prompt("Copy your referral link",$("refLink").value);}
- };
-
- const free=[
-  {text:"What is 12 × 3?",options:["24","36","42"]},
-  {text:"Which planet is called the Red Planet?",options:["Mars","Venus","Jupiter"]},
-  {text:"How many days are in a week?",options:["5","6","7"]},
-  {text:"Opposite of increase?",options:["Expand","Decrease","Multiply"]},
-  {text:"Which number is even?",options:["13","17","20"]}
- ];
- const extra=[
-  {text:"100 divided by 4?",options:["20","25","40"]},
-  {text:"Which device is used to type?",options:["Keyboard","Monitor","Speaker"]},
-  {text:"How many sides does a triangle have?",options:["2","3","4"]}
- ];
- let profile=null,answered=[],extraUnlocked=false;
-
- async function refresh(){
-  if(!auth.currentUser)return;
-  const uid=auth.currentUser.uid;
-  const snap=await getDoc(doc(db,"users",uid));
-  if(!snap.exists()){
-   $("setupMsg").textContent=
-    "Signed in, but your profile is missing. Deploy the registerProfile backend function.";
-   $("setup").classList.remove("hidden");
-   return;
+  try {
+    $("authSubmit").disabled = true;
+    if (isRegister) {
+      if (!name) throw new Error("Please enter your full name.");
+      const result = await auth.createUserWithEmailAndPassword(email, password);
+      const referral = new URLSearchParams(location.search).get("ref");
+      await db.collection("users").doc(result.user.uid).set({
+        uid: result.user.uid,
+        email: result.user.email,
+        displayName: name,
+        points: 0,
+        referredBy: referral && referral !== result.user.uid ? referral : null,
+        createdAt: serverTime()
+      });
+      notice("Account created successfully. Welcome to NexaUps!");
+    } else {
+      await auth.signInWithEmailAndPassword(email, password);
+      notice("Login successful. Welcome back!");
+    }
+  } catch (error) {
+    notice(friendlyError(error), true);
+  } finally {
+    $("authSubmit").disabled = false;
   }
-  profile=snap.data();
-  $("setup").classList.add("hidden");
-  $("auth").classList.add("hidden");
-  $("dashboard").classList.remove("hidden");
-  $("userName").textContent=profile.name||"Member";
-  $("userEmail").textContent=auth.currentUser.email||"";
-  $("balance").textContent="KSh "+Number(profile.balance||0).toLocaleString();
-  $("withdrawBalance").textContent=$("balance").textContent;
-  $("myCode").textContent=profile.referralCode||"Pending";
-  $("refCount").textContent=profile.referralCount||0;
-  $("refLink").value=location.origin+location.pathname+
-   "?ref="+encodeURIComponent(profile.referralCode||"");
+});
 
-  const led=await getDocs(query(collection(db,"walletLedger"),
-   where("uid","==",uid),orderBy("createdAt","desc"),limit(30)));
-  $("ledger").replaceChildren();
-  if(led.empty)$("ledger").textContent="No transactions yet.";
-  led.forEach(s=>{
-   const d=s.data(),el=document.createElement("div");
-   el.className="notice";
-   el.textContent=(d.description||d.type||"Transaction")+" · KSh "+
-    Number(d.amount||0)+" · "+(d.status||"recorded");
-   $("ledger").append(el);
-  });
-
-  const req=await getDocs(query(collection(db,"withdrawalRequests"),
-   where("uid","==",uid),orderBy("createdAt","desc"),limit(20)));
-  $("withdrawals").replaceChildren();
-  if(req.empty)$("withdrawals").textContent="No requests yet.";
-  req.forEach(s=>{
-   const d=s.data(),el=document.createElement("div");
-   el.className="notice";
-   el.textContent="KSh "+Number(d.amount||0)+" · "+(d.status||"pending");
-   $("withdrawals").append(el);
-  });
-  answered=profile.answeredQuestions||[];
-  extraUnlocked=!!profile.extraUnlocked;
-  renderQuestions();
- }
-
- function renderQuestions(){
-  $("taskProgress").textContent="Completed: "+answered.length+" / 5 free questions";
-  $("questions").replaceChildren();
-  free.forEach((q,i)=>{
-   const box=document.createElement("div");box.className="question";
-   const title=document.createElement("p");title.textContent=(i+1)+". "+q.text;
-   box.append(title);
-   q.options.forEach((op,j)=>{
-    const b=document.createElement("button");
-    b.className="secondary";b.textContent=op;
-    b.disabled=answered.includes(i);
-    b.onclick=async()=>{
-     b.disabled=true;
-     try{
-      const r=await answerQuestion({index:i,choice:j});
-      msg("taskMsg",r.data.message||"Answer recorded.");
-      await refresh();
-     }catch(e){b.disabled=false;msg("taskMsg",errorText(e));}
-    };
-    box.append(b);
-   });
-   $("questions").append(box);
-  });
-  $("extraStatus").textContent=extraUnlocked?
-   "Extra questions unlocked!":"Complete all five free questions first.";
-  $("extras").replaceChildren();
-  if(extraUnlocked)extra.forEach((q,i)=>{
-   const box=document.createElement("div");box.className="question";
-   const title=document.createElement("p");title.textContent=q.text;box.append(title);
-   q.options.forEach((op,j)=>{
-    const b=document.createElement("button");b.className="secondary";
-    b.textContent=op;
-    b.onclick=async()=>{
-     try{
-      const r=await answerQuestion({index:i,choice:j,extra:true});
-      msg("taskMsg",r.data.message||"Answer recorded.");
-      await refresh();
-     }catch(e){msg("taskMsg",errorText(e));}
-    };
-    box.append(b);
-   });
-   $("extras").append(box);
-  });
- }
-
- $("withdrawBtn").onclick=async()=>{
-  const amount=Number($("amount").value);
-  const phone=$("payoutPhone").value.trim();
-  if(!Number.isSafeInteger(amount)||amount<2000)
-   return msg("withdrawMsg","Minimum withdrawal is KSh 2,000.");
-  if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))
-   return msg("withdrawMsg","Enter a valid payout phone number.");
-  $("withdrawBtn").disabled=true;
-  try{
-   const r=await requestWithdrawal({amount,phone});
-   msg("withdrawMsg",r.data.message||"Request submitted for review.");
-   await refresh();
-  }catch(e){msg("withdrawMsg",errorText(e));}
-  finally{$("withdrawBtn").disabled=false;}
- };
-
- onAuthStateChanged(auth,async user=>{
-  $("auth").classList.toggle("hidden",!!user);
-  $("dashboard").classList.toggle("hidden",!user);
-  if(user){
-   try{await refresh();}
-   catch(e){
-    $("setup").classList.remove("hidden");
-    msg("setupMsg",errorText(e));
-   }
-  }else{
-   $("setup").classList.add("hidden");
-   $("auth").classList.remove("hidden");
-  }
- });
- const referral=new URLSearchParams(location.search).get("ref");
- if(referral)$("refCode").value=referral.toUpperCase();
-
-}catch(e){
- $("setupMsg").textContent="Firebase error: "+errorText(e);
+function friendlyError(error) {
+  const code = error && error.code;
+  const messages = {
+    "auth/email-already-in-use":"That email already has an account. Try logging in.",
+    "auth/invalid-email":"Please enter a valid email address.",
+    "auth/weak-password":"Choose a stronger password with at least 6 characters.",
+    "auth/invalid-credential":"Email or password is incorrect.",
+    "auth/user-not-found":"No account was found for those details.",
+    "auth/wrong-password":"Email or password is incorrect.",
+    "auth/too-many-requests":"Too many attempts. Please wait and try again.",
+    "permission-denied":"Firebase Firestore rules blocked this action. Check the setup instructions below.",
+    "unavailable":"Firebase is temporarily unavailable. Check your internet and try again."
+  };
+  return messages[code] || (error && error.message) || "Something went wrong. Please try again.";
 }
+
+auth.onAuthStateChanged(async user => {
+  currentUser = user;
+  clearNotice();
+
+  if (profileListener) profileListener();
+  if (withdrawalListener) withdrawalListener();
+  profileListener = null;
+  withdrawalListener = null;
+  currentProfile = null;
+
+  $("authSection").classList.toggle("hidden", !!user);
+  $("appSection").classList.toggle("hidden", !user);
+
+  if (!user) return;
+
+  $("userEmail").textContent = user.email || "";
+  $("userName").textContent = user.displayName || "Member";
+
+  const profileRef = db.collection("users").doc(user.uid);
+
+  profileListener = profileRef.onSnapshot(doc => {
+    if (!doc.exists) {
+      notice("Your profile is missing. Please contact the site administrator.", true);
+      return;
+    }
+    currentProfile = doc.data();
+    $("userName").textContent = currentProfile.displayName || "Member";
+    $("points").textContent = safeText(currentProfile.points || 0);
+    $("walletPoints").textContent = safeText(currentProfile.points || 0);
+    $("refCount").textContent = "Ready";
+    $("refLink").value = location.origin + location.pathname + "?ref=" + encodeURIComponent(user.uid);
+  }, error => notice(friendlyError(error), true));
+
+  withdrawalListener = db.collection("withdrawals")
+    .where("uid", "==", user.uid)
+    .onSnapshot(snapshot => {
+      const list = $("withdrawHistory");
+      list.textContent = "";
+      if (snapshot.empty) {
+        list.textContent = "No withdrawal requests yet.";
+        return;
+      }
+      const docs = snapshot.docs.slice(0, 10);
+      docs.forEach(doc => {
+        const data = doc.data();
+        const item = document.createElement("p");
+        item.textContent = "Request: " + safeText(data.amount) +
+          " points — " + safeText(data.status || "pending");
+        list.appendChild(item);
+      });
+    }, error => {
+      $("withdrawHistory").textContent = friendlyError(error);
+    });
+});
+
+function showPage(page) {
+  ["home","questions","referrals","wallet"].forEach(name => {
+    $("page-" + name).classList.toggle("hidden", name !== page);
+  });
+  document.querySelectorAll("[data-page]").forEach(button => {
+    button.classList.toggle("secondary", button.dataset.page !== page);
+  });
+}
+document.querySelectorAll("[data-page]").forEach(button =>
+  button.addEventListener("click", () => showPage(button.dataset.page))
+);
+document.querySelectorAll("[data-goto]").forEach(button =>
+  button.addEventListener("click", () => showPage(button.dataset.goto))
+);
+
+$("quizForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!currentUser) return notice("Please log in first.", true);
+
+  const form = new FormData(event.currentTarget);
+  const answers = {};
+  for (let i = 1; i <= 5; i++) {
+    const value = form.get("q" + i);
+    if (!value) return notice("Please answer all five questions.", true);
+    answers["q" + i] = value;
+  }
+
+  const correct = {q1:"a",q2:"b",q3:"a",q4:"c",q5:"a"};
+  let score = 0;
+  Object.keys(correct).forEach(key => {
+    if (answers[key] === correct[key]) score++;
+  });
+
+  try {
+    await db.collection("users").doc(currentUser.uid)
+      .collection("quizSubmissions").add({
+        answers,
+        score,
+        total: 5,
+        rewardStatus: "not_configured",
+        submittedAt: serverTime()
+      });
+    $("quizResult").textContent =
+      "Your answers were saved. Score: " + score +
+      "/5. No points have been added; verified rewards need secure server-side processing.";
+    notice("Your answers were saved successfully.");
+  } catch (error) {
+    notice(friendlyError(error), true);
+  }
+});
+
+$("copyRef").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText($("refLink").value);
+    notice("Referral link copied. Share it with a friend.");
+  } catch {
+    $("refLink").select();
+    notice("Select and copy your referral link.");
+  }
+});
+
+$("withdrawForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!currentUser) return notice("Please log in first.", true);
+
+  const amount = Number($("withdrawAmount").value);
+  const method = $("paymentMethod").value;
+  const details = $("paymentDetails").value.trim();
+
+  if (!Number.isSafeInteger(amount) || amount <= 0)
+    return notice("Enter a whole number of points greater than zero.", true);
+  if (!method || !details)
+    return notice("Complete the payment fields.", true);
+
+  if (!currentProfile || amount > Number(currentProfile.points || 0))
+    return notice("Your available points are insufficient for this request.", true);
+
+  try {
+    await db.collection("withdrawals").add({
+      uid: currentUser.uid,
+      amount,
+      method,
+      paymentDetails: details,
+      status: "pending",
+      requestedAt: serverTime()
+    });
+    $("withdrawForm").reset();
+    notice("Request submitted. It is pending review; no payment has been sent.");
+  } catch (error) {
+    notice(friendlyError(error), true);
+  }
+});
+
+$("logout").addEventListener("click", async () => {
+  try {
+    await auth.signOut();
+    setAuthMode(false);
+    notice("You have logged out.");
+  } catch (error) {
+    notice(friendlyError(error), true);
+  }
+});
+
+$("year").textContent = new Date().getFullYear();
+setAuthMode(true);
 </script>
 </body>
-  </html>
- 
+         </html>
+       
