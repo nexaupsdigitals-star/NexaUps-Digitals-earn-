@@ -3,375 +3,316 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NexaUps Digitals Earn</title>
+<title>Hey Evans 💙 | A Little Check-In</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f1f5f9;color:#172033}
-header{background:#10234b;color:white;padding:23px 16px;text-align:center}
-header h1{margin:0;font-size:25px}
-header p{margin:8px 0 0;color:#cbd5e1}
-main{max-width:700px;margin:20px auto;padding:0 13px}
-.card{background:white;padding:20px;border-radius:15px;margin-bottom:16px;box-shadow:0 3px 14px #0000000c}
-h2{font-size:19px;margin-top:0}
-input,button{width:100%;padding:13px;margin:7px 0;border-radius:9px;font-size:15px}
-input{border:1px solid #cbd5e1}
-button{border:0;background:#155eef;color:white;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.6}
-.secondary{background:#e7efff;color:#12346b}
-.wallet{background:linear-gradient(120deg,#10234b,#155eef);color:white}
-.balance{font-size:32px;font-weight:bold;margin:10px 0}
-.small{font-size:13px;color:#64748b;line-height:1.5}
-.notice{background:#fff7df;border-radius:9px;padding:12px;font-size:13px;line-height:1.5}
-#app{display:none}
-#status{white-space:pre-wrap;font-size:14px}
-.question{border-bottom:1px solid #e2e8f0;padding:12px 0}
-footer{text-align:center;color:#64748b;padding:20px;font-size:12px}
+:root{--blue:#377dff;--pink:#ff79b0;--dark:#142344}
+body{
+ margin:0;font-family:Arial,sans-serif;color:#263451;
+ background:linear-gradient(145deg,#e9f2ff,#fff0f6,#edf3ff);
+}
+header{
+ padding:35px 18px 45px;text-align:center;color:white;
+ background:linear-gradient(135deg,#142344,#315caa,#8c70c9);
+ border-radius:0 0 32px 32px;
+}
+header h1{font-size:35px;margin:15px 0}
+header p{line-height:1.7;max-width:550px;margin:auto}
+.heart{font-size:43px;animation:pulse 1.5s infinite}
+@keyframes pulse{50%{transform:scale(1.15)}}
+main{max-width:700px;margin:22px auto;padding:0 13px}
+.card{
+ background:white;padding:21px;margin-bottom:17px;
+ border-radius:20px;box-shadow:0 7px 25px #233b6412;
+}
+h2{font-size:21px;color:#24416e;margin-top:0}
+p{line-height:1.75}
+.tag{color:#8a56bc;font-weight:bold;font-size:13px}
+button{
+ border:0;border-radius:13px;padding:13px 17px;
+ cursor:pointer;font-weight:bold;font-size:14px;
+ background:#e9f0ff;color:#24416e;margin:5px 3px;
+ transition:.2s;
+}
+button:hover{transform:translateY(-2px)}
+button.selected{background:#377dff;color:white}
+.primary{background:linear-gradient(120deg,#377dff,#9a64df);color:white}
+.buttons{display:flex;flex-wrap:wrap;gap:5px}
+.question{border-bottom:1px solid #edf0f6;padding:14px 0}
+.question:last-child{border-bottom:0}
+textarea,input{
+ width:100%;padding:13px;border:1px solid #d8e1f0;
+ border-radius:12px;font:inherit;margin-top:8px;
+}
+textarea{min-height:95px;resize:vertical}
+.result{
+ display:none;background:#f1f6ff;padding:16px;
+ border-radius:14px;margin-top:14px;line-height:1.8;
+ white-space:pre-wrap;
+}
+.progress{height:7px;background:#e7eafa;border-radius:9px;overflow:hidden}
+#bar{height:100%;width:0;background:linear-gradient(90deg,#377dff,#f47ab2);transition:.3s}
+footer{text-align:center;padding:25px 15px 40px;color:#62718b}
+footer strong{color:#8a56bc}
+.small{font-size:13px;color:#74819a}
 </style>
 </head>
 <body>
+
 <header>
-<h1>NexaUps Digitals Earn</h1>
-<p>Learn • Invite • Grow</p>
+<div class="heart">💙</div>
+<p>JUST A LITTLE CHECK-IN</p>
+<h1>Hey Evans! 👋</h1>
+<p>
+Okay Madiii 😂❤️, today I'm checking on you properly!
+How is home? How is everyone? How are YOU, really?
+Take your time and let's have a little conversation.
+</p>
+<p style="margin-top:18px">Made with care, just for you ✨</p>
 </header>
 
 <main>
-<section class="card" id="registration">
-<h2>Create Your Account</h2>
-<p class="small">Enter your phone number and Gmail address. No OTP code is requested.</p>
-<form id="registerForm">
-<input id="phone" type="tel" placeholder="Phone number e.g. 07XXXXXXXX" required>
-<input id="email" type="email" placeholder="Your unique Gmail address" required>
-<button id="registerBtn" type="submit">Register Now</button>
-</form>
-<p class="small">Registration without email verification does not confirm that you own the email address.</p>
-</section>
 
-<section id="app">
-<div class="card wallet">
-<div>Your wallet</div>
-<div class="balance">KSh <span id="balance">0</span></div>
-<div class="small" style="color:#e0eaff">Only verified and authorized rewards can become withdrawable.</div>
+<div class="card">
+<p class="tag">01 · FIRST THINGS FIRST</p>
+<h2>How is home, Madiii? 🏡</h2>
+<p>It's been on my mind to ask how things are going on your side.
+Choose whichever answer describes things best.</p>
+<div class="buttons" id="home">
+<button onclick="pick(this,'home','Everything is good at home 🥰')">Everything is good 🥰</button>
+<button onclick="pick(this,'home','Things are okay, just normal life 😊')">Things are okay 😊</button>
+<button onclick="pick(this,'home','A few things have been happening 😅')">A few things 😅</button>
+<button onclick="pick(this,'home','Honestly, things have been difficult ❤️‍🩹')">It's been difficult ❤️‍🩹</button>
+</div>
+<div id="homeReply" class="result"></div>
 </div>
 
 <div class="card">
-<h2>Your Referral Link</h2>
-<p>Share your unique link with friends.</p>
-<input id="refLink" readonly>
-<button class="secondary" id="copyBtn">Copy Referral Link</button>
-<p class="small">Referral rewards remain pending until genuine registrations are checked.</p>
+<p class="tag">02 · THE PEOPLE AT HOME</p>
+<h2>How is everyone? 🫶</h2>
+<p>And how are your people doing? I hope everyone is safe, healthy, and finding reasons to smile.</p>
+<div class="buttons" id="family">
+<button onclick="pick(this,'family','Everyone is doing well ❤️')">Everyone is well ❤️</button>
+<button onclick="pick(this,'family','Some people are okay, others need prayers 🙏')">Some are okay 🙏</button>
+<button onclick="pick(this,'family','I have a few things on my mind about home 💭')">It's complicated 💭</button>
+</div>
+<div id="familyReply" class="result"></div>
+<p>Anything interesting happening at home lately? Any funny stories, visitors, celebrations, or family drama? 😂</p>
+<textarea id="familyStory" placeholder="Tell me a little story..."></textarea>
 </div>
 
 <div class="card">
-<h2>Mind Questions</h2>
-<p class="small">Answer five free questions. More questions become available when unlocked by the website administrator.</p>
-<div id="questions"></div>
-<button id="unlockBtn" class="secondary">Request More Questions</button>
-<p id="quizMessage" class="small"></p>
+<p class="tag">03 · ENOUGH ABOUT EVERYONE ELSE</p>
+<h2>Now let's talk about YOU, Evans. 💙</h2>
+<p>Because sometimes we check on everybody and forget to ask how the person in front of us is actually doing.</p>
+<p><strong>How have you been feeling lately?</strong></p>
+<div class="buttons" id="mood">
+<button onclick="pick(this,'mood','Happy and grateful 😄')">Happy 😄</button>
+<button onclick="pick(this,'mood','Calm and peaceful 😌')">At peace 😌</button>
+<button onclick="pick(this,'mood','Tired but pushing through 💪')">Tired 😴</button>
+<button onclick="pick(this,'mood','A little stressed lately 🥲')">Stressed 🥲</button>
+<button onclick="pick(this,'mood','Not really sure how I feel 🤔')">Mixed feelings 🤔</button>
+</div>
+<div id="moodReply" class="result"></div>
+<p><strong>On a scale of 1–10, how are you REALLY doing?</strong></p>
+<div class="buttons" id="rating">
+<button onclick="pick(this,'rating','3/10')">1–3 🥲</button>
+<button onclick="pick(this,'rating','4–6/10')">4–6 😐</button>
+<button onclick="pick(this,'rating','7–8/10')">7–8 😊</button>
+<button onclick="pick(this,'rating','9–10/10')">9–10 🥳</button>
+</div>
+<div id="ratingReply" class="result"></div>
 </div>
 
 <div class="card">
-<h2>Request a Withdrawal</h2>
-<p class="small">Minimum request: KSh 2,000. Submitting a request does not guarantee payment.</p>
-<input id="withdrawAmount" type="number" min="2000" placeholder="Amount in KSh">
-<button id="withdrawBtn">Submit Withdrawal Request</button>
-<div class="notice">Never pay an upfront fee on the assumption that it guarantees a withdrawal. Confirm any charges and the recipient independently before sending money.</div>
+<p class="tag">04 · LIFE LATELY</p>
+<h2>What's been keeping you busy? 🌍</h2>
+<p>School, work, responsibilities, plans, random thoughts at 2 AM? 😂 Tell me what your days have been looking like.</p>
+<div class="buttons" id="busy">
+<button onclick="pick(this,'busy','School or studies 📚')">School 📚</button>
+<button onclick="pick(this,'busy','Work and responsibilities 💼')">Work 💼</button>
+<button onclick="pick(this,'busy','Family and personal things 🏡')">Personal things 🏡</button>
+<button onclick="pick(this,'busy','Just surviving life 😂')">Surviving 😂</button>
+<button onclick="pick(this,'busy','Working on my dreams 🚀')">My dreams 🚀</button>
+</div>
+<div id="busyReply" class="result"></div>
+<p>And are you getting enough rest, or are you one of those people who says "I'm fine" while running on two hours of sleep? 😂</p>
+<div class="buttons" id="rest">
+<button onclick="pick(this,'rest','I sleep well 😴')">I sleep well 😴</button>
+<button onclick="pick(this,'rest','My sleep schedule is a crime 😂')">It's a crime 😂</button>
+<button onclick="pick(this,'rest','I need more rest 🥲')">Need more rest 🥲</button>
+</div>
+<div id="restReply" class="result"></div>
 </div>
 
 <div class="card">
-<h2>Account</h2>
-<p id="accountInfo" class="small"></p>
-<button class="secondary" id="logoutBtn">Sign Out</button>
+<p class="tag">05 · THE FUN QUESTIONS 😂</p>
+<h2>Let's make this interesting, Madiii!</h2>
+<p><strong>Choose your current vibe:</strong></p>
+<div class="buttons" id="vibe">
+<button onclick="pick(this,'vibe','Quiet and unbothered 😎')">Unbothered 😎</button>
+<button onclick="pick(this,'vibe','Talkative today 😂')">Talkative 😂</button>
+<button onclick="pick(this,'vibe','I need food immediately 🍗')">Hungry 🍗</button>
+<button onclick="pick(this,'vibe','I need a holiday 🏖️')">Need a holiday 🏖️</button>
+<button onclick="pick(this,'vibe','I need money, not questions 💸')">Need money 💸</button>
 </div>
-</section>
-<p id="status" role="status"></p>
+<div id="vibeReply" class="result"></div>
+<p><strong>If you could be anywhere right now, where would you go?</strong></p>
+<div class="buttons" id="place">
+<button onclick="pick(this,'place','At home, relaxing 🏡')">Home 🏡</button>
+<button onclick="pick(this,'place','Somewhere with beautiful views 🌄')">Somewhere beautiful 🌄</button>
+<button onclick="pick(this,'place','Out eating good food 🍕')">Good food 🍕</button>
+<button onclick="pick(this,'place','On an adventure 🚗')">Adventure 🚗</button>
+<button onclick="pick(this,'place','Somewhere peaceful with no stress 🌿')">Peace and quiet 🌿</button>
+</div>
+<div id="placeReply" class="result"></div>
+<p><strong>One last one: what's something that can instantly make you smile?</strong></p>
+<textarea id="smile" placeholder="A person, a memory, food, a joke... anything 😂"></textarea>
+</div>
+
+<div class="card">
+<p class="tag">06 · A LITTLE DEEPER</p>
+<h2>Let's talk about the things that matter. 🌻</h2>
+<p>What's one thing you're looking forward to?</p>
+<textarea id="future" placeholder="Something you're excited about..."></textarea>
+<p>Is there something you've been wanting to do but haven't had the chance to?</p>
+<textarea id="dream" placeholder="A goal, a trip, a plan, anything..."></textarea>
+<p>What's one thing you wish people understood about you without you having to explain it?</p>
+<textarea id="understood" placeholder="You can be honest here..."></textarea>
+<p>When life gets overwhelming, do you prefer talking to someone, having some space, or distracting yourself until you're okay?</p>
+<div class="buttons" id="support">
+<button onclick="pick(this,'support','I prefer talking it out 🗣️')">Talk it out 🗣️</button>
+<button onclick="pick(this,'support','I need a little space 🌿')">Space 🌿</button>
+<button onclick="pick(this,'support','Distraction and laughter 😂')">Make me laugh 😂</button>
+<button onclick="pick(this,'support','It depends on the day 💭')">Depends 💭</button>
+</div>
+<div id="supportReply" class="result"></div>
+</div>
+
+<div class="card">
+<p class="tag">07 · A SMALL REMINDER ❤️</p>
+<h2>Hey, Evans. Read this slowly. 💌</h2>
+<p>
+You don't always have to have everything figured out.
+You don't have to be strong every single day.
+You can have plans and still feel uncertain sometimes.
+You can smile around people and still have a lot on your mind.
+</p>
+<p>
+Whatever season you're in right now, I hope you're giving yourself credit for making it this far.
+I hope home brings you comfort, your people are doing well, and your dreams keep giving you a reason to move forward.
+</p>
+<p>
+And if nobody has asked you today, here's someone asking:
+<strong>Are you genuinely okay, Madiii?</strong> 🥹💙
+</p>
+<p>
+No pressure to give a perfect answer. A simple, honest one is enough.
+</p>
+</div>
+
+<div class="card">
+<p class="tag">08 · YOUR TURN, MADIII 💬</p>
+<h2>Anything else you want to tell me?</h2>
+<p>Maybe something funny happened, maybe you have news, or maybe you just want to talk. This space is yours.</p>
+<textarea id="anything" placeholder="I'm listening, Evans... 👀"></textarea>
+<p>And how would you like us to continue this conversation?</p>
+<div class="buttons" id="continue">
+<button onclick="pick(this,'continue','Let’s talk about life 🌍')">Life 🌍</button>
+<button onclick="pick(this,'continue','Let’s exchange funny stories 😂')">Funny stories 😂</button>
+<button onclick="pick(this,'continue','Ask me more questions 👀')">More questions 👀</button>
+<button onclick="pick(this,'continue','Just a normal conversation 😊')">Just chat 😊</button>
+</div>
+<div id="continueReply" class="result"></div>
+</div>
+
+<div class="card" style="text-align:center">
+<div style="font-size:40px">💙✨💙</div>
+<h2>Thank you for stopping by, Evans!</h2>
+<p>I hope this little check-in reminds you that people care about how you're doing, not just what you're doing.</p>
+<p>May home be peaceful, may your people be well, and may you keep finding reasons to smile.</p>
+<p><strong>Take care of yourself, Madiii. You deserve good things too. 🫶</strong></p>
+<p style="font-size:21px;color:#8a56bc"><strong>Talk soon! ❤️</strong></p>
+<p class="small">— Someone who wanted to check on you 😊</p>
+<button class="primary" onclick="makeSummary()">💌 Put My Answers Together</button>
+<div id="summary" class="result" style="text-align:left"></div>
+<button onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to the top ↑</button>
+</div>
+
 </main>
 
-<footer>© 2026 NexaUps Digitals Earn</footer>
+<footer>
+Made with a little care and good vibes 💙<br>
+<strong>For Evans, aka Madiii 🥰</strong>
+</footer>
 
-<script type="module">
-import { initializeApp } from
-"https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-import {
-  getAuth, signInAnonymously, onAuthStateChanged, signOut
-} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-import {
-  getFirestore, doc, getDoc, setDoc, collection, query,
-  where, getDocs, addDoc, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+<script>
+const answers={};
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDvIQeEEHyC9IRYY-MAH9swGAaley4fqNM",
-  authDomain: "nexaups-digitals-earn.firebaseapp.com",
-  projectId: "nexaups-digitals-earn",
-  storageBucket: "nexaups-digitals-earn.firebasestorage.app",
-  messagingSenderId: "163765409667",
-  appId: "1:163765409667:web:af90581a1fd98fd12388b6",
-  measurementId: "G-S2K6TD8VHJ"
-};
+function pick(button,group,value){
+ answers[group]=value;
+ document.querySelectorAll('#'+group+' button').forEach(b=>b.classList.remove('selected'));
+ button.classList.add('selected');
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+ const replies={
+ home:"I hope things at home keep getting better. ❤️",
+ family:"Sending good wishes to everyone at home! 🫶",
+ mood:"Thanks for being honest. Whatever you're feeling, you don't have to pretend everything is perfect. 💙",
+ rating:"I appreciate the honest answer. Take things one day at a time. 🌻",
+ busy:"I hope you're making time for yourself while handling everything. 💪",
+ rest:"Please take care of yourself too, Madiii. Rest matters! 😌",
+ vibe:"😂😂 I hear you, Madiii!",
+ place:"That actually sounds like a good plan! ✨",
+ support:"Thanks for telling me. Everyone deserves care in the way that works for them. 💙",
+ continue:"Deal! 😂 Let's keep the conversation going."
+ };
 
-const $ = id => document.getElementById(id);
-let currentUser = null;
-let profile = null;
-let freeAnswers = 0;
-
-function message(text) {
-  $("status").textContent = text;
+ const output=document.getElementById(group+'Reply');
+ if(output){output.textContent=replies[group]||"Thanks for sharing! ❤️";output.style.display='block';}
 }
 
-function makeReferralCode() {
-  return "NX" + crypto.randomUUID().replaceAll("-", "").slice(0, 10).toUpperCase();
+function makeSummary(){
+ const fields=[
+  ['Home story','familyStory'],['Something that makes me smile','smile'],
+  ['What I look forward to','future'],['A dream or plan','dream'],
+  ['What I wish people understood','understood'],['Anything else','anything']
+ ];
+ let text="HEY! HERE ARE MY ANSWERS 💙\n\n";
+ for(const [label,id] of fields){
+  const value=document.getElementById(id).value.trim();
+  if(value)text+=label+": "+value+"\n\n";
+ }
+ for(const [key,value] of Object.entries(answers)){
+  text+=key.charAt(0).toUpperCase()+key.slice(1)+": "+value+"\n";
+ }
+ text+="\nThanks for checking on me! ❤️";
+ const box=document.getElementById('summary');
+ box.textContent=text;
+ box.style.display='block';
+
+ if(navigator.share){
+  const btn=document.createElement('button');
+  btn.className='primary';
+  btn.textContent='Share My Answers';
+  btn.onclick=()=>navigator.share({title:'My answers for Madiii',text});
+  box.appendChild(btn);
+ }
+ const copy=document.createElement('button');
+ copy.textContent='Copy My Answers';
+ copy.onclick=async()=>{
+  try{
+   await navigator.clipboard.writeText(text);
+   copy.textContent='Copied! 💙';
+  }catch{
+   const area=document.createElement('textarea');
+   area.value=text;box.appendChild(area);area.select();
+   document.execCommand('copy');area.remove();
+   copy.textContent='Copied! 💙';
+  }
+ };
+ box.appendChild(copy);
+ box.scrollIntoView({behavior:'smooth',block:'center'});
 }
-
-const questions = [
-  {q:"What is 12 + 8?", a:["18","20","22"], correct:1},
-  {q:"Which planet is known as the Red Planet?", a:["Mars","Venus","Jupiter"], correct:0},
-  {q:"How many days are in a normal year?", a:["364","365","366"], correct:1},
-  {q:"What is the opposite of 'expand'?", a:["Increase","Stretch","Contract"], correct:2},
-  {q:"Which is the largest ocean?", a:["Atlantic","Indian","Pacific"], correct:2},
-  {q:"What is 9 × 7?", a:["56","63","72"], correct:1},
-  {q:"Which gas do plants absorb?", a:["Oxygen","Carbon dioxide","Hydrogen"], correct:1},
-  {q:"How many sides does a hexagon have?", a:["Five","Six","Eight"], correct:1},
-  {q:"What is the capital of Kenya?", a:["Nairobi","Mombasa","Kisumu"], correct:0},
-  {q:"What is half of 100?", a:["25","40","50"], correct:2}
-];
-
-async function registerUser(phone, email, referralCode) {
-  const normalizedEmail = email.trim().toLowerCase();
-
-  if (!/^[^\s@]+@gmail\.com$/.test(normalizedEmail)) {
-    throw new Error("Please enter a valid Gmail address ending in @gmail.com.");
-  }
-
-  const duplicate = await getDocs(query(
-    collection(db, "users"),
-    where("email", "==", normalizedEmail)
-  ));
-
-  if (!duplicate.empty) {
-    throw new Error("This Gmail address is already registered.");
-  }
-
-  let referrerUid = null;
-  if (referralCode) {
-    const refQuery = await getDocs(query(
-      collection(db, "users"),
-      where("referralCode", "==", referralCode)
-    ));
-    if (!refQuery.empty) referrerUid = refQuery.docs[0].id;
-  }
-
-  const credential = await signInAnonymously(auth);
-  const user = credential.user;
-  const code = makeReferralCode();
-
-  const userProfile = {
-    phone,
-    email: normalizedEmail,
-    referralCode: code,
-    referredBy: referrerUid,
-    createdAt: serverTimestamp(),
-    freeQuestionsUsed: 0,
-    bonusStatus: "pending_review",
-    referralRewardsStatus: "pending_review"
-  };
-
-  await setDoc(doc(db, "users", user.uid), userProfile);
-
-  // No spendable bonus or referral reward is fabricated here.
-  // A trusted backend must validate eligibility before crediting a wallet.
-  await setDoc(doc(db, "wallets", user.uid), {
-    balance: 0,
-    pendingWelcomeBonus: 700,
-    pendingReferralRewards: 0,
-    updatedAt: serverTimestamp()
-  });
-
-  return user;
-}
-
-$("registerForm").addEventListener("submit", async event => {
-  event.preventDefault();
-  $("registerBtn").disabled = true;
-  message("Registering your account...");
-
-  try {
-    const phone = $("phone").value.trim();
-    const email = $("email").value.trim();
-    const params = new URLSearchParams(location.search);
-    const referralCode = params.get("ref") || "";
-
-    if (phone.length < 9) throw new Error("Enter a valid phone number.");
-
-    await registerUser(phone, email, referralCode);
-    message("Registration successful.");
-  } catch (error) {
-    message("Registration failed: " + error.message);
-  } finally {
-    $("registerBtn").disabled = false;
-  }
-});
-
-onAuthStateChanged(auth, async user => {
-  currentUser = user;
-
-  if (!user || user.isAnonymous === false) {
-    $("registration").style.display = "block";
-    $("app").style.display = "none";
-    return;
-  }
-
-  try {
-    const snap = await getDoc(doc(db, "users", user.uid));
-
-    if (!snap.exists()) {
-      $("registration").style.display = "block";
-      $("app").style.display = "none";
-      return;
-    }
-
-    profile = snap.data();
-    $("registration").style.display = "none";
-    $("app").style.display = "block";
-    $("accountInfo").textContent = profile.email + " • " + profile.phone;
-
-    $("refLink").value =
-      location.origin + location.pathname + "?ref=" + profile.referralCode;
-
-    const wallet = await getDoc(doc(db, "wallets", user.uid));
-    $("balance").textContent = wallet.exists()
-      ? Number(wallet.data().balance || 0).toLocaleString()
-      : "0";
-
-    renderQuestions();
-  } catch (error) {
-    message("Could not load your account: " + error.message);
-  }
-});
-
-function renderQuestions() {
-  const container = $("questions");
-  container.innerHTML = "";
-  freeAnswers = Number(profile.freeQuestionsUsed || 0);
-
-  questions.forEach((item, index) => {
-    if (index >= 5 && !profile.moreQuestionsUnlocked) return;
-
-    const div = document.createElement("div");
-    div.className = "question";
-
-    const title = document.createElement("p");
-    title.textContent = (index + 1) + ". " + item.q;
-    div.appendChild(title);
-
-    const select = document.createElement("select");
-    select.style.width = "100%";
-    select.style.padding = "10px";
-    select.style.borderRadius = "8px";
-
-    const placeholder = document.createElement("option");
-    placeholder.value = "";
-    placeholder.textContent = "Choose an answer";
-    select.appendChild(placeholder);
-
-    item.a.forEach((answer, answerIndex) => {
-      const option = document.createElement("option");
-      option.value = answerIndex;
-      option.textContent = answer;
-      select.appendChild(option);
-    });
-
-    const button = document.createElement("button");
-    button.textContent = "Submit Answer";
-    button.onclick = async () => {
-      if (select.value === "") {
-        $("quizMessage").textContent = "Please choose an answer.";
-        return;
-      }
-
-      if (index >= 5 && !profile.moreQuestionsUnlocked) {
-        $("quizMessage").textContent = "These questions are locked.";
-        return;
-      }
-
-      $("quizMessage").textContent =
-        Number(select.value) === item.correct ? "Correct answer!" : "Not quite. Try the next question.";
-
-      button.disabled = true;
-      if (index < 5) {
-        try {
-          const used = Math.min(5, Number(profile.freeQuestionsUsed || 0) + 1);
-          await setDoc(doc(db, "users", currentUser.uid), {
-            freeQuestionsUsed: used
-          }, { merge: true });
-          profile.freeQuestionsUsed = used;
-        } catch (error) {
-          $("quizMessage").textContent = "Could not save progress: " + error.message;
-          button.disabled = false;
-        }
-      }
-    };
-
-    div.appendChild(select);
-    div.appendChild(button);
-    container.appendChild(div);
-  });
-}
-
-$("copyBtn").addEventListener("click", async () => {
-  try {
-    await navigator.clipboard.writeText($("refLink").value);
-    message("Referral link copied.");
-  } catch {
-    $("refLink").select();
-    message("Select and copy your referral link.");
-  }
-});
-
-$("unlockBtn").addEventListener("click", () => {
-  $("quizMessage").textContent =
-    "More questions require administrator approval. No payment has been taken.";
-});
-
-$("withdrawBtn").addEventListener("click", async () => {
-  if (!currentUser) return;
-
-  const amount = Number($("withdrawAmount").value);
-  if (!Number.isFinite(amount) || amount < 2000) {
-    message("The minimum withdrawal request is KSh 2,000.");
-    return;
-  }
-
-  try {
-    const wallet = await getDoc(doc(db, "wallets", currentUser.uid));
-    const balance = wallet.exists() ? Number(wallet.data().balance || 0) : 0;
-
-    if (amount > balance) {
-      message("Your approved wallet balance is insufficient for this request.");
-      return;
-    }
-
-    await addDoc(collection(db, "withdrawalRequests"), {
-      uid: currentUser.uid,
-      amount,
-      status: "pending_review",
-      createdAt: serverTimestamp()
-    });
-
-    message("Withdrawal request submitted for review. This is not confirmation of payment.");
-    $("withdrawAmount").value = "";
-  } catch (error) {
-    message("Withdrawal request failed: " + error.message);
-  }
-});
-
-$("logoutBtn").addEventListener("click", async () => {
-  await signOut(auth);
-  message("Signed out. Anonymous accounts need a secure recovery or login method to return to the same account.");
-});
 </script>
 </body>
-</html>
+  </html>
