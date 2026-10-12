@@ -3,30 +3,28 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NexaUps Digitals Earn</title>
 <style>
 :root{--bg:#09111f;--panel:#131f32;--green:#00e5a0;--text:#f4f7ff;--muted:#aab8cc}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:15px Arial,sans-serif}
-header{padding:20px;background:#101b2d;border-bottom:1px solid #293951}
-.brand{font-size:23px;font-weight:bold}.brand span{color:var(--green)}
-p,small{color:var(--muted);line-height:1.6}
-main{max-width:760px;margin:auto;padding:16px}
-.card{background:var(--panel);border:1px solid #293951;border-radius:16px;padding:18px;margin-bottom:15px}
-h2{font-size:19px;margin-top:0}
-input,button{width:100%;padding:13px;margin:7px 0;border-radius:9px;font-size:15px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px Arial,sans-serif}
+header{padding:22px;background:#101b2d;border-bottom:1px solid #293951}
+.brand{font-size:24px;font-weight:bold}.brand span{color:var(--green)}
+p{color:var(--muted);line-height:1.5}
+main{max-width:720px;margin:auto;padding:18px}
+.card{background:var(--panel);border:1px solid #293951;border-radius:16px;padding:20px;margin-bottom:16px}
+input,button{width:100%;padding:14px;margin:7px 0;border-radius:10px;font-size:16px}
 input{background:#0a1425;border:1px solid #354660;color:white}
-button{border:0;background:var(--green);color:#071b15;font-weight:bold;cursor:pointer}
-button.secondary{background:#283951;color:white}
-button:disabled{opacity:.5}
-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:15px}
-nav button{flex:1;min-width:75px;font-size:13px}
+button{background:var(--green);border:0;color:#071b15;font-weight:bold}
+.secondary{background:#283951;color:white}
+.notice{background:#202f45;border-radius:10px;padding:13px;overflow-wrap:anywhere}
 .hidden{display:none!important}
-.balance{font-size:32px;font-weight:bold;margin:12px 0}
+nav{display:flex;gap:6px;flex-wrap:wrap}
+nav button{flex:1;min-width:75px;font-size:13px}
 .hero{background:linear-gradient(130deg,#086e5d,#153c60)}
-.notice,.question{background:#202f45;padding:13px;border-radius:10px;margin:10px 0;overflow-wrap:anywhere}
-.question{background:#0a1425}
+.balance{font-size:32px;font-weight:bold}
+.question{padding:12px;background:#0a1425;border-radius:10px;margin:10px 0}
 </style>
 </head>
 <body>
@@ -34,15 +32,21 @@ nav button{flex:1;min-width:75px;font-size:13px}
  <div class="brand">NexaUps <span>Digitals Earn</span></div>
  <p>Learn • Refer • Grow</p>
 </header>
+
 <main>
-<section id="auth" class="card">
+<div id="setup" class="card">
+ <h2>Website setup required</h2>
+ <p id="setupMsg">Connect your Firebase project to enable accounts.</p>
+</div>
+
+<section id="auth" class="card hidden">
  <h2>Welcome to NexaUps Earn</h2>
  <div id="registerFields">
   <h3>Create account</h3>
   <input id="name" placeholder="Full name">
   <input id="phone" type="tel" placeholder="Phone number">
-  <input id="email" type="email" placeholder="Unique Gmail address">
-  <input id="password" type="password" placeholder="Password (8+ characters)">
+  <input id="email" type="email" placeholder="Gmail address">
+  <input id="password" type="password" placeholder="Password (minimum 8 characters)">
   <input id="refCode" placeholder="Referral code (optional)">
   <button id="registerBtn">Register</button>
   <button class="secondary" id="showLogin">Already registered? Log in</button>
@@ -65,61 +69,57 @@ nav button{flex:1;min-width:75px;font-size:13px}
   <button data-tab="referrals">Refer</button>
   <button data-tab="tasks">Questions</button>
   <button data-tab="withdraw">Withdraw</button>
-  <button class="secondary" id="logoutBtn">Logout</button>
+  <button id="logoutBtn" class="secondary">Log out</button>
  </nav>
 
  <section id="wallet" class="tab">
   <div class="card hero">
-   <small>DEMO WALLET BALANCE</small>
-   <div class="balance" id="balance">KSh 700</div>
-   <p>Welcome promotional credit: KSh 700</p>
+   <p>Wallet balance</p><div class="balance" id="balance">KSh 0</div>
+   <p>Promotional and pending rewards are subject to eligibility.</p>
   </div>
-  <div class="card"><h2>Wallet activity</h2><div id="ledger">No transactions yet.</div></div>
+  <div class="card"><h3>Wallet activity</h3><div id="ledger">No transactions yet.</div></div>
  </section>
 
  <section id="referrals" class="tab hidden">
   <div class="card">
    <h2>Invite friends</h2>
-   <p>Your unique referral code</p>
-   <div class="notice" id="myCode"></div>
+   <p>Your referral code</p><div class="notice" id="myCode"></div>
    <input id="refLink" readonly>
    <button id="copyCode">Copy referral link</button>
    <p>Advertised eligible referral reward: KSh 150.</p>
-   <p>Successful referrals: <strong id="refCount">0</strong></p>
+   <p>Referrals: <strong id="refCount">0</strong></p>
   </div>
  </section>
 
  <section id="tasks" class="tab hidden">
   <div class="card">
-   <h2>Mind challenge 🧠</h2>
-   <p id="taskProgress">Five free questions</p>
+   <h2>Mind questions 🧠</h2>
+   <p id="taskProgress">Complete five free questions.</p>
    <div id="questions"></div>
-   <div id="taskMsg" class="notice">Answer correctly to continue.</div>
-   <h3>Extra questions</h3>
-   <p id="extraStatus">Complete five free questions to unlock more.</p>
+   <div id="taskMsg" class="notice">Choose an answer.</div>
+   <h3>Extra questions</h3><p id="extraStatus">Locked until the first five are complete.</p>
    <div id="extras"></div>
   </div>
  </section>
 
  <section id="withdraw" class="tab hidden">
   <div class="card">
-   <h2>Withdraw funds</h2>
-   <p>Minimum request: KSh 2,000.</p>
-   <p>Demo balance: <strong id="withdrawBalance">KSh 700</strong></p>
-   <input id="amount" type="number" min="2000" placeholder="Amount in KSh">
+   <h2>Withdrawal request</h2><p>Minimum: KSh 2,000</p>
+   <p>Available balance: <strong id="withdrawBalance">KSh 0</strong></p>
+   <input id="amount" type="number" placeholder="Amount in KSh">
    <input id="payoutPhone" type="tel" placeholder="M-Pesa phone number">
    <button id="withdrawBtn">Submit request</button>
    <div id="withdrawMsg" class="notice hidden"></div>
-   <h3>Withdrawal history</h3>
-   <div id="withdrawals">No requests yet.</div>
+   <h3>Request history</h3><div id="withdrawals">No requests.</div>
   </div>
  </section>
 </section>
-<p style="text-align:center">© NexaUps Digitals Earn</p>
+<footer style="text-align:center;padding:20px;color:#aab8cc">© NexaUps Digitals Earn</footer>
 </main>
 
 <script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {initializeApp} from
+ "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {
  getAuth,onAuthStateChanged,createUserWithEmailAndPassword,
  signInWithEmailAndPassword,sendPasswordResetEmail,signOut
@@ -127,179 +127,251 @@ import {
 import {
  getFirestore,doc,getDoc,collection,query,where,orderBy,limit,getDocs
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-import {getFunctions,httpsCallable} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js";
+import {getFunctions,httpsCallable} from
+ "https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js";
 
-const firebaseConfig={
- apiKey:"YOUR_FIREBASE_API_KEY",
- authDomain:"YOUR_PROJECT_ID.firebaseapp.com",
- projectId:"YOUR_PROJECT_ID",
- appId:"YOUR_FIREBASE_APP_ID"
-};
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app),db=getFirestore(app);
-const functions=getFunctions(app,"us-central1");
-const registerProfile=httpsCallable(functions,"registerProfile");
-const answerQuestion=httpsCallable(functions,"answerQuestion");
-const requestWithdrawal=httpsCallable(functions,"requestWithdrawal");
-const $=id=>document.getElementById(id);
-
-const freeQuestions=[
- ["What is 12 × 3?",["24","36","42"]],
- ["Which planet is known as the Red Planet?",["Mars","Venus","Jupiter"]],
- ["How many days are in a week?",["5","6","7"]],
- ["What is the opposite of increase?",["Expand","Decrease","Multiply"]],
- ["Which is an even number?",["13","17","20"]]
-];
-const extraQuestions=[
- ["What is 100 divided by 4?",["20","25","40"]],
- ["Which device is used for typing?",["Keyboard","Monitor","Speaker"]],
- ["How many sides does a triangle have?",["2","3","4"]]
-];
-let profile=null,answered=[],extraUnlocked=false;
-
-function msg(id,text){
- $(id).textContent=text;$(id).classList.remove("hidden");
-}
-function err(e){return e?.message||"Something went wrong. Please try again."}
-
-$("showLogin").onclick=()=>{
- $("registerFields").classList.add("hidden");
- $("loginFields").classList.remove("hidden");
-};
-$("showRegister").onclick=()=>{
- $("loginFields").classList.add("hidden");
- $("registerFields").classList.remove("hidden");
+/* ===== FIREBASE CONFIGURATION =====
+   Paste the real values from Firebase Console:
+   Project settings > General > Your apps.
+   Do not leave the example values in place.
+*/
+const firebaseConfig = {
+ apiKey: "PASTE_REAL_API_KEY",
+ authDomain: "PASTE_REAL_PROJECT_ID.firebaseapp.com",
+ projectId: "PASTE_REAL_PROJECT_ID",
+ appId: "PASTE_REAL_APP_ID"
 };
 
-$("registerBtn").onclick=async()=>{
- const name=$("name").value.trim(),phone=$("phone").value.trim();
- const email=$("email").value.trim().toLowerCase(),password=$("password").value;
- const refCode=$("refCode").value.trim().toUpperCase();
- if(name.length<2)return msg("authMsg","Enter your full name.");
- if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))return msg("authMsg","Enter a valid phone number.");
- if(!/^[^\s@]+@gmail\.com$/i.test(email))return msg("authMsg","Enter a Gmail address.");
- if(password.length<8)return msg("authMsg","Password must have at least 8 characters.");
- $("registerBtn").disabled=true;
- try{
-  await createUserWithEmailAndPassword(auth,email,password);
-  await registerProfile({name,phone,refCode});
-  await refresh();
- }catch(e){msg("authMsg",err(e))}
- finally{$("registerBtn").disabled=false}
-};
+const $ = id => document.getElementById(id);
+const placeholders = Object.values(firebaseConfig).some(v =>
+ !v || v.startsWith("PASTE_REAL_") ||
+ v.includes("YOUR_PROJECT_ID")
+);
 
-$("loginBtn").onclick=async()=>{
- try{await signInWithEmailAndPassword(auth,$("loginEmail").value.trim(),$("loginPassword").value)}
- catch(e){msg("authMsg",err(e))}
-};
-$("resetBtn").onclick=async()=>{
- try{
-  await sendPasswordResetEmail(auth,$("loginEmail").value.trim());
-  msg("authMsg","If the account exists, a reset email will be sent.");
- }catch(e){msg("authMsg",err(e))}
-};
-$("logoutBtn").onclick=()=>signOut(auth);
+if(placeholders){
+ $("setupMsg").textContent =
+ "Firebase is not connected yet. Open Firebase Console > Project settings > General > Your apps, copy your real web configuration, and replace the four marked values in this HTML.";
+} else {
+ try {
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const functions = getFunctions(app, "us-central1");
 
-document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{
- document.querySelectorAll(".tab").forEach(t=>t.classList.add("hidden"));
- $(b.dataset.tab).classList.remove("hidden");
-});
+  const registerProfile = httpsCallable(functions, "registerProfile");
+  const answerQuestion = httpsCallable(functions, "answerQuestion");
+  const requestWithdrawal = httpsCallable(functions, "requestWithdrawal");
 
-$("copyCode").onclick=async()=>{
- try{await navigator.clipboard.writeText($("refLink").value);msg("taskMsg","Referral link copied!")}
- catch{prompt("Copy your referral link",$("refLink").value)}
-};
+  $("setup").classList.add("hidden");
+  $("auth").classList.remove("hidden");
 
-async function refresh(){
- if(!auth.currentUser)return;
- const uid=auth.currentUser.uid;
- const snap=await getDoc(doc(db,"users",uid));
- if(!snap.exists())return;
- profile=snap.data();
- $("auth").classList.add("hidden");$("dashboard").classList.remove("hidden");
- $("userName").textContent=profile.name||"Member";
- $("userEmail").textContent=auth.currentUser.email||"";
- $("balance").textContent="KSh "+Number(profile.balance||0).toLocaleString();
- $("withdrawBalance").textContent=$("balance").textContent;
- $("myCode").textContent=profile.referralCode||"";
- $("refCount").textContent=profile.referralCount||0;
- $("refLink").value=location.origin+location.pathname+"?ref="+encodeURIComponent(profile.referralCode||"");
+  function showMessage(id,text){
+   $(id).textContent=text;
+   $(id).classList.remove("hidden");
+  }
+  function errorMessage(e){
+   return e?.message || "An error occurred. Check your Firebase setup.";
+  }
 
- const led=await getDocs(query(collection(db,"walletLedger"),where("uid","==",uid),orderBy("createdAt","desc"),limit(30)));
- $("ledger").replaceChildren();
- led.forEach(s=>{
-  const d=s.data(),el=document.createElement("div");el.className="notice";
-  el.textContent=(d.description||d.type||"Transaction")+" · KSh "+Number(d.amount||0)+" · "+(d.status||"recorded");
-  $("ledger").append(el);
- });
- const req=await getDocs(query(collection(db,"withdrawalRequests"),where("uid","==",uid),orderBy("createdAt","desc"),limit(20)));
- $("withdrawals").replaceChildren();
- if(req.empty)$("withdrawals").textContent="No requests yet.";
- req.forEach(s=>{
-  const d=s.data(),el=document.createElement("div");el.className="notice";
-  el.textContent="KSh "+Number(d.amount||0)+" · "+(d.status||"pending");
-  $("withdrawals").append(el);
- });
- answered=profile.answeredQuestions||[];
- extraUnlocked=!!profile.extraUnlocked;
- renderQuestions();
-}
+  $("showLogin").onclick=()=>{
+   $("registerFields").classList.add("hidden");
+   $("loginFields").classList.remove("hidden");
+  };
+  $("showRegister").onclick=()=>{
+   $("loginFields").classList.add("hidden");
+   $("registerFields").classList.remove("hidden");
+  };
 
-function renderQuestions(){
- $("taskProgress").textContent="Free questions completed: "+answered.length+" / 5";
- $("questions").replaceChildren();
- freeQuestions.forEach((q,i)=>{
-  const box=document.createElement("div");box.className="question";
-  const title=document.createElement("p");title.textContent=(i+1)+". "+q[0];box.append(title);
-  q[1].forEach((option,j)=>{
-   const b=document.createElement("button");b.className="secondary";b.textContent=option;
-   b.disabled=answered.includes(i);
-   b.onclick=async()=>{
-    b.disabled=true;
-    try{
-     const r=await answerQuestion({index:i,choice:j});
-     msg("taskMsg",r.data.message||"Answer recorded.");await refresh();
-    }catch(e){b.disabled=false;msg("taskMsg",err(e))}
-   };
-   box.append(b);
+  $("registerBtn").onclick=async()=>{
+   const name=$("name").value.trim();
+   const phone=$("phone").value.trim();
+   const email=$("email").value.trim().toLowerCase();
+   const password=$("password").value;
+   const refCode=$("refCode").value.trim().toUpperCase();
+
+   if(name.length<2)return showMessage("authMsg","Enter your name.");
+   if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))
+    return showMessage("authMsg","Enter a valid phone number.");
+   if(!/^[^\s@]+@gmail\.com$/i.test(email))
+    return showMessage("authMsg","Enter a Gmail address.");
+   if(password.length<8)
+    return showMessage("authMsg","Password must be at least 8 characters.");
+
+   $("registerBtn").disabled=true;
+   try{
+    await createUserWithEmailAndPassword(auth,email,password);
+    await registerProfile({name,phone,refCode});
+    await refresh();
+   }catch(e){showMessage("authMsg",errorMessage(e));}
+   finally{$("registerBtn").disabled=false;}
+  };
+
+  $("loginBtn").onclick=async()=>{
+   try{
+    await signInWithEmailAndPassword(auth,$("loginEmail").value.trim(),
+     $("loginPassword").value);
+   }catch(e){showMessage("authMsg",errorMessage(e));}
+  };
+  $("resetBtn").onclick=async()=>{
+   try{
+    await sendPasswordResetEmail(auth,$("loginEmail").value.trim());
+    showMessage("authMsg","Check your email for reset instructions.");
+   }catch(e){showMessage("authMsg",errorMessage(e));}
+  };
+  $("logoutBtn").onclick=()=>signOut(auth);
+
+  document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{
+   document.querySelectorAll(".tab").forEach(t=>t.classList.add("hidden"));
+   $(b.dataset.tab).classList.remove("hidden");
   });
-  $("questions").append(box);
- });
- $("extraStatus").textContent=extraUnlocked?"Extra questions unlocked!":"Complete all five free questions first.";
- $("extras").replaceChildren();
- if(extraUnlocked)extraQuestions.forEach((q,i)=>{
-  const box=document.createElement("div");box.className="question";
-  const title=document.createElement("p");title.textContent=q[0];box.append(title);
-  q[1].forEach((option,j)=>{
-   const b=document.createElement("button");b.className="secondary";b.textContent=option;
-   b.onclick=async()=>{
-    try{const r=await answerQuestion({index:i,choice:j,extra:true});msg("taskMsg",r.data.message||"Answer recorded.");}
-    catch(e){msg("taskMsg",err(e))}
-   };box.append(b);
-  });$("extras").append(box);
- });
+
+  $("copyCode").onclick=async()=>{
+   const link=$("refLink").value;
+   try{
+    await navigator.clipboard.writeText(link);
+    showMessage("taskMsg","Referral link copied.");
+   }catch{prompt("Copy your link",link);}
+  };
+
+  const free=[
+   {text:"What is 12 × 3?",options:["24","36","42"]},
+   {text:"Which planet is called the Red Planet?",options:["Mars","Venus","Jupiter"]},
+   {text:"How many days are in a week?",options:["5","6","7"]},
+   {text:"Opposite of increase?",options:["Expand","Decrease","Multiply"]},
+   {text:"Which number is even?",options:["13","17","20"]}
+  ];
+  const extra=[
+   {text:"100 divided by 4?",options:["20","25","40"]},
+   {text:"Which device is used to type?",options:["Keyboard","Monitor","Speaker"]},
+   {text:"How many sides does a triangle have?",options:["2","3","4"]}
+  ];
+  let profile=null,answered=[],extraUnlocked=false;
+
+  async function refresh(){
+   if(!auth.currentUser)return;
+   const uid=auth.currentUser.uid;
+   const snap=await getDoc(doc(db,"users",uid));
+   if(!snap.exists()){
+    showMessage("authMsg","Your profile has not been created by the backend.");
+    return;
+   }
+   profile=snap.data();
+   $("auth").classList.add("hidden");
+   $("dashboard").classList.remove("hidden");
+   $("userName").textContent=profile.name||"Member";
+   $("userEmail").textContent=auth.currentUser.email||"";
+   $("balance").textContent="KSh "+Number(profile.balance||0).toLocaleString();
+   $("withdrawBalance").textContent=$("balance").textContent;
+   $("myCode").textContent=profile.referralCode||"";
+   $("refCount").textContent=profile.referralCount||0;
+   $("refLink").value=location.origin+location.pathname+
+    "?ref="+encodeURIComponent(profile.referralCode||"");
+
+   const led=await getDocs(query(collection(db,"walletLedger"),
+    where("uid","==",uid),orderBy("createdAt","desc"),limit(30)));
+   $("ledger").replaceChildren();
+   if(led.empty)$("ledger").textContent="No transactions yet.";
+   led.forEach(s=>{
+    const d=s.data(),el=document.createElement("div");
+    el.className="notice";
+    el.textContent=(d.description||d.type||"Transaction")+" · KSh "+
+     Number(d.amount||0)+" · "+(d.status||"recorded");
+    $("ledger").append(el);
+   });
+
+   const req=await getDocs(query(collection(db,"withdrawalRequests"),
+    where("uid","==",uid),orderBy("createdAt","desc"),limit(20)));
+   $("withdrawals").replaceChildren();
+   if(req.empty)$("withdrawals").textContent="No requests yet.";
+   req.forEach(s=>{
+    const d=s.data(),el=document.createElement("div");
+    el.className="notice";
+    el.textContent="KSh "+Number(d.amount||0)+" · "+(d.status||"pending");
+    $("withdrawals").append(el);
+   });
+
+   answered=profile.answeredQuestions||[];
+   extraUnlocked=!!profile.extraUnlocked;
+   renderQuestions();
+  }
+
+  function renderQuestions(){
+   $("taskProgress").textContent="Completed: "+answered.length+" / 5 free questions";
+   $("questions").replaceChildren();
+   free.forEach((q,i)=>{
+    const box=document.createElement("div");box.className="question";
+    const title=document.createElement("p");title.textContent=(i+1)+". "+q.text;
+    box.append(title);
+    q.options.forEach((op,j)=>{
+     const b=document.createElement("button");
+     b.className="secondary";b.textContent=op;
+     b.disabled=answered.includes(i);
+     b.onclick=async()=>{
+      b.disabled=true;
+      try{
+       const r=await answerQuestion({index:i,choice:j});
+       showMessage("taskMsg",r.data.message||"Answer recorded.");
+       await refresh();
+      }catch(e){b.disabled=false;showMessage("taskMsg",errorMessage(e));}
+     };
+     box.append(b);
+    });
+    $("questions").append(box);
+   });
+   $("extraStatus").textContent=extraUnlocked?
+    "Extra questions unlocked!":"Complete all five free questions first.";
+   $("extras").replaceChildren();
+   if(extraUnlocked)extra.forEach((q,i)=>{
+    const box=document.createElement("div");box.className="question";
+    const title=document.createElement("p");title.textContent=q.text;box.append(title);
+    q.options.forEach((op,j)=>{
+     const b=document.createElement("button");b.className="secondary";
+     b.textContent=op;
+     b.onclick=async()=>{
+      try{
+       const r=await answerQuestion({index:i,choice:j,extra:true});
+       showMessage("taskMsg",r.data.message||"Answer recorded.");
+      }catch(e){showMessage("taskMsg",errorMessage(e));}
+     };
+     box.append(b);
+    });
+    $("extras").append(box);
+   });
+  }
+
+  $("withdrawBtn").onclick=async()=>{
+   const amount=Number($("amount").value);
+   const phone=$("payoutPhone").value.trim();
+   if(!Number.isSafeInteger(amount)||amount<2000)
+    return showMessage("withdrawMsg","Minimum withdrawal is KSh 2,000.");
+   if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))
+    return showMessage("withdrawMsg","Enter a valid payout number.");
+   $("withdrawBtn").disabled=true;
+   try{
+    const r=await requestWithdrawal({amount,phone});
+    showMessage("withdrawMsg",r.data.message||"Request sent for review.");
+    await refresh();
+   }catch(e){showMessage("withdrawMsg",errorMessage(e));}
+   finally{$("withdrawBtn").disabled=false;}
+  };
+
+  onAuthStateChanged(auth,async user=>{
+   $("auth").classList.toggle("hidden",!!user);
+   $("dashboard").classList.toggle("hidden",!user);
+   if(user)try{await refresh();}catch(e){
+    showMessage("authMsg",errorMessage(e));
+   }
+  });
+
+  const ref=new URLSearchParams(location.search).get("ref");
+  if(ref)$("refCode").value=ref.toUpperCase();
+
+ } catch(e) {
+  $("setupMsg").textContent="Firebase initialization failed: "+
+   (e?.message||"Check your configuration values.");
+ }
 }
-
-$("withdrawBtn").onclick=async()=>{
- const amount=Number($("amount").value),phone=$("payoutPhone").value.trim();
- if(!Number.isSafeInteger(amount)||amount<2000)return msg("withdrawMsg","Minimum request is KSh 2,000.");
- if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))return msg("withdrawMsg","Enter a valid payout phone number.");
- $("withdrawBtn").disabled=true;
- try{
-  const r=await requestWithdrawal({amount,phone});
-  msg("withdrawMsg",r.data.message||"Request submitted for review.");await refresh();
- }catch(e){msg("withdrawMsg",err(e))}
- finally{$("withdrawBtn").disabled=false}
-};
-
-onAuthStateChanged(auth,async user=>{
- $("auth").classList.toggle("hidden",!!user);
- $("dashboard").classList.toggle("hidden",!user);
- if(user)try{await refresh()}catch(e){msg("authMsg",err(e))}
-});
-const ref=new URLSearchParams(location.search).get("ref");
-if(ref)$("refCode").value=ref.toUpperCase();
 </script>
 </body>
-   </html>
-                                                  
+ </html>
+                         
