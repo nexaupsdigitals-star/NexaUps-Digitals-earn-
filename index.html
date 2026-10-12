@@ -17,6 +17,7 @@ main{max-width:720px;margin:auto;padding:18px}
 input,button{width:100%;padding:14px;margin:7px 0;border-radius:10px;font-size:16px}
 input{background:#0a1425;border:1px solid #354660;color:white}
 button{background:var(--green);border:0;color:#071b15;font-weight:bold}
+button:disabled{opacity:.5}
 .secondary{background:#283951;color:white}
 .notice{background:#202f45;border-radius:10px;padding:13px;overflow-wrap:anywhere}
 .hidden{display:none!important}
@@ -32,28 +33,27 @@ nav button{flex:1;min-width:75px;font-size:13px}
  <div class="brand">NexaUps <span>Digitals Earn</span></div>
  <p>Learn • Refer • Grow</p>
 </header>
-
 <main>
 <div id="setup" class="card">
- <h2>Website setup required</h2>
- <p id="setupMsg">Connect your Firebase project to enable accounts.</p>
+ <h2>Connecting NexaUps Earn</h2>
+ <p id="setupMsg">Checking Firebase connection…</p>
 </div>
 
 <section id="auth" class="card hidden">
  <h2>Welcome to NexaUps Earn</h2>
  <div id="registerFields">
   <h3>Create account</h3>
-  <input id="name" placeholder="Full name">
+  <input id="name" placeholder="Full name" autocomplete="name">
   <input id="phone" type="tel" placeholder="Phone number">
-  <input id="email" type="email" placeholder="Gmail address">
-  <input id="password" type="password" placeholder="Password (minimum 8 characters)">
+  <input id="email" type="email" placeholder="Gmail address" autocomplete="email">
+  <input id="password" type="password" placeholder="Password (minimum 8 characters)" autocomplete="new-password">
   <input id="refCode" placeholder="Referral code (optional)">
   <button id="registerBtn">Register</button>
   <button class="secondary" id="showLogin">Already registered? Log in</button>
  </div>
  <div id="loginFields" class="hidden">
   <h3>Log in</h3>
-  <input id="loginEmail" type="email" placeholder="Email address">
+  <input id="loginEmail" type="email" placeholder="Gmail address">
   <input id="loginPassword" type="password" placeholder="Password">
   <button id="loginBtn">Log in</button>
   <button class="secondary" id="showRegister">Create account</button>
@@ -71,42 +71,32 @@ nav button{flex:1;min-width:75px;font-size:13px}
   <button data-tab="withdraw">Withdraw</button>
   <button id="logoutBtn" class="secondary">Log out</button>
  </nav>
-
  <section id="wallet" class="tab">
-  <div class="card hero">
-   <p>Wallet balance</p><div class="balance" id="balance">KSh 0</div>
-   <p>Promotional and pending rewards are subject to eligibility.</p>
-  </div>
+  <div class="card hero"><p>Wallet balance</p><div class="balance" id="balance">KSh 0</div></div>
   <div class="card"><h3>Wallet activity</h3><div id="ledger">No transactions yet.</div></div>
  </section>
-
  <section id="referrals" class="tab hidden">
   <div class="card">
-   <h2>Invite friends</h2>
-   <p>Your referral code</p><div class="notice" id="myCode"></div>
+   <h2>Invite friends</h2><p>Your referral code</p><div class="notice" id="myCode"></div>
    <input id="refLink" readonly>
    <button id="copyCode">Copy referral link</button>
    <p>Advertised eligible referral reward: KSh 150.</p>
    <p>Referrals: <strong id="refCount">0</strong></p>
   </div>
  </section>
-
  <section id="tasks" class="tab hidden">
   <div class="card">
-   <h2>Mind questions 🧠</h2>
-   <p id="taskProgress">Complete five free questions.</p>
-   <div id="questions"></div>
-   <div id="taskMsg" class="notice">Choose an answer.</div>
+   <h2>Mind questions 🧠</h2><p id="taskProgress">Completed: 0 / 5</p>
+   <div id="questions"></div><div id="taskMsg" class="notice">Choose an answer.</div>
    <h3>Extra questions</h3><p id="extraStatus">Locked until the first five are complete.</p>
    <div id="extras"></div>
   </div>
  </section>
-
  <section id="withdraw" class="tab hidden">
   <div class="card">
    <h2>Withdrawal request</h2><p>Minimum: KSh 2,000</p>
    <p>Available balance: <strong id="withdrawBalance">KSh 0</strong></p>
-   <input id="amount" type="number" placeholder="Amount in KSh">
+   <input id="amount" type="number" min="2000" placeholder="Amount in KSh">
    <input id="payoutPhone" type="tel" placeholder="M-Pesa phone number">
    <button id="withdrawBtn">Submit request</button>
    <div id="withdrawMsg" class="notice hidden"></div>
@@ -118,8 +108,7 @@ nav button{flex:1;min-width:75px;font-size:13px}
 </main>
 
 <script type="module">
-import {initializeApp} from
- "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {
  getAuth,onAuthStateChanged,createUserWithEmailAndPassword,
  signInWithEmailAndPassword,sendPasswordResetEmail,signOut
@@ -127,251 +116,262 @@ import {
 import {
  getFirestore,doc,getDoc,collection,query,where,orderBy,limit,getDocs
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-import {getFunctions,httpsCallable} from
- "https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js";
+import {getFunctions,httpsCallable} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js";
 
-/* ===== FIREBASE CONFIGURATION =====
-   Paste the real values from Firebase Console:
-   Project settings > General > Your apps.
-   Do not leave the example values in place.
-*/
+/* ===== YOUR REAL FIREBASE WEB CONFIGURATION ===== */
 const firebaseConfig = {
- apiKey: "PASTE_REAL_API_KEY",
- authDomain: "PASTE_REAL_PROJECT_ID.firebaseapp.com",
- projectId: "PASTE_REAL_PROJECT_ID",
- appId: "PASTE_REAL_APP_ID"
+ apiKey: "AIzaSyDvIQeEEHyC9IRYY-MAH9swGAaley4fqNM",
+ authDomain: "nexaups-digitals-earn.firebaseapp.com",
+ projectId: "nexaups-digitals-earn",
+ storageBucket: "nexaups-digitals-earn.firebasestorage.app",
+ messagingSenderId: "163765409667",
+ appId: "1:163765409667:web:af90581a1fd98fd12388b6",
+ measurementId: "G-S2K6TD8VHJ"
 };
 
-const $ = id => document.getElementById(id);
-const placeholders = Object.values(firebaseConfig).some(v =>
- !v || v.startsWith("PASTE_REAL_") ||
- v.includes("YOUR_PROJECT_ID")
-);
+const $=id=>document.getElementById(id);
+function msg(id,text){
+ $(id).textContent=text;
+ $(id).classList.remove("hidden");
+}
+function errorText(e){
+ const code=e?.code||"";
+ const known={
+  "auth/email-already-in-use":"This email already has an account. Please log in.",
+  "auth/invalid-email":"Please enter a valid email address.",
+  "auth/weak-password":"Choose a stronger password.",
+  "auth/invalid-credential":"Email or password is incorrect.",
+  "auth/operation-not-allowed":"Enable Email/Password in Firebase Authentication.",
+  "permission-denied":"Firebase security rules are blocking this action.",
+  "functions/not-found":"The required backend function has not been deployed.",
+  "functions/unavailable":"Backend unavailable. Try again later."
+ };
+ return known[code]||e?.message||"Something went wrong. Please try again.";
+}
 
-if(placeholders){
- $("setupMsg").textContent =
- "Firebase is not connected yet. Open Firebase Console > Project settings > General > Your apps, copy your real web configuration, and replace the four marked values in this HTML.";
-} else {
- try {
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const functions = getFunctions(app, "us-central1");
+try{
+ const app=initializeApp(firebaseConfig);
+ const auth=getAuth(app);
+ const db=getFirestore(app);
+ const functions=getFunctions(app,"us-central1");
 
-  const registerProfile = httpsCallable(functions, "registerProfile");
-  const answerQuestion = httpsCallable(functions, "answerQuestion");
-  const requestWithdrawal = httpsCallable(functions, "requestWithdrawal");
+ /* These functions must exist in your deployed Firebase backend. */
+ const registerProfile=httpsCallable(functions,"registerProfile");
+ const answerQuestion=httpsCallable(functions,"answerQuestion");
+ const requestWithdrawal=httpsCallable(functions,"requestWithdrawal");
 
+ $("setupMsg").textContent="Firebase initialized. Checking account services…";
+
+ $("showLogin").onclick=()=>{
+  $("registerFields").classList.add("hidden");
+  $("loginFields").classList.remove("hidden");
+ };
+ $("showRegister").onclick=()=>{
+  $("loginFields").classList.add("hidden");
+  $("registerFields").classList.remove("hidden");
+ };
+
+ $("registerBtn").onclick=async()=>{
+  const name=$("name").value.trim();
+  const phone=$("phone").value.trim();
+  const email=$("email").value.trim().toLowerCase();
+  const password=$("password").value;
+  const refCode=($("refCode").value.trim()||
+    new URLSearchParams(location.search).get("ref")||"").toUpperCase();
+
+  if(name.length<2)return msg("authMsg","Enter your full name.");
+  if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))
+   return msg("authMsg","Enter a valid phone number.");
+  if(!/^[^\s@]+@gmail\.com$/i.test(email))
+   return msg("authMsg","Enter a valid Gmail address.");
+  if(password.length<8)
+   return msg("authMsg","Password must contain at least 8 characters.");
+
+  $("registerBtn").disabled=true;
+  try{
+   const credential=await createUserWithEmailAndPassword(auth,email,password);
+   await registerProfile({name,phone,refCode});
+   await refresh();
+   msg("authMsg","Account created.");
+  }catch(e){
+   msg("authMsg","Registration: "+errorText(e));
+  }finally{$("registerBtn").disabled=false;}
+ };
+
+ $("loginBtn").onclick=async()=>{
+  $("loginBtn").disabled=true;
+  try{
+   await signInWithEmailAndPassword(auth,
+    $("loginEmail").value.trim(),$("loginPassword").value);
+  }catch(e){msg("authMsg",errorText(e));}
+  finally{$("loginBtn").disabled=false;}
+ };
+ $("resetBtn").onclick=async()=>{
+  try{
+   await sendPasswordResetEmail(auth,$("loginEmail").value.trim());
+   msg("authMsg","Password reset email sent. Check your inbox.");
+  }catch(e){msg("authMsg",errorText(e));}
+ };
+ $("logoutBtn").onclick=()=>signOut(auth);
+
+ document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(t=>t.classList.add("hidden"));
+  $(b.dataset.tab).classList.remove("hidden");
+ });
+
+ $("copyCode").onclick=async()=>{
+  try{
+   await navigator.clipboard.writeText($("refLink").value);
+   msg("taskMsg","Referral link copied.");
+  }catch{prompt("Copy your referral link",$("refLink").value);}
+ };
+
+ const free=[
+  {text:"What is 12 × 3?",options:["24","36","42"]},
+  {text:"Which planet is called the Red Planet?",options:["Mars","Venus","Jupiter"]},
+  {text:"How many days are in a week?",options:["5","6","7"]},
+  {text:"Opposite of increase?",options:["Expand","Decrease","Multiply"]},
+  {text:"Which number is even?",options:["13","17","20"]}
+ ];
+ const extra=[
+  {text:"100 divided by 4?",options:["20","25","40"]},
+  {text:"Which device is used to type?",options:["Keyboard","Monitor","Speaker"]},
+  {text:"How many sides does a triangle have?",options:["2","3","4"]}
+ ];
+ let profile=null,answered=[],extraUnlocked=false;
+
+ async function refresh(){
+  if(!auth.currentUser)return;
+  const uid=auth.currentUser.uid;
+  const snap=await getDoc(doc(db,"users",uid));
+  if(!snap.exists()){
+   $("setupMsg").textContent=
+    "Signed in, but your profile is missing. Deploy the registerProfile backend function.";
+   $("setup").classList.remove("hidden");
+   return;
+  }
+  profile=snap.data();
   $("setup").classList.add("hidden");
-  $("auth").classList.remove("hidden");
+  $("auth").classList.add("hidden");
+  $("dashboard").classList.remove("hidden");
+  $("userName").textContent=profile.name||"Member";
+  $("userEmail").textContent=auth.currentUser.email||"";
+  $("balance").textContent="KSh "+Number(profile.balance||0).toLocaleString();
+  $("withdrawBalance").textContent=$("balance").textContent;
+  $("myCode").textContent=profile.referralCode||"Pending";
+  $("refCount").textContent=profile.referralCount||0;
+  $("refLink").value=location.origin+location.pathname+
+   "?ref="+encodeURIComponent(profile.referralCode||"");
 
-  function showMessage(id,text){
-   $(id).textContent=text;
-   $(id).classList.remove("hidden");
-  }
-  function errorMessage(e){
-   return e?.message || "An error occurred. Check your Firebase setup.";
-  }
-
-  $("showLogin").onclick=()=>{
-   $("registerFields").classList.add("hidden");
-   $("loginFields").classList.remove("hidden");
-  };
-  $("showRegister").onclick=()=>{
-   $("loginFields").classList.add("hidden");
-   $("registerFields").classList.remove("hidden");
-  };
-
-  $("registerBtn").onclick=async()=>{
-   const name=$("name").value.trim();
-   const phone=$("phone").value.trim();
-   const email=$("email").value.trim().toLowerCase();
-   const password=$("password").value;
-   const refCode=$("refCode").value.trim().toUpperCase();
-
-   if(name.length<2)return showMessage("authMsg","Enter your name.");
-   if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))
-    return showMessage("authMsg","Enter a valid phone number.");
-   if(!/^[^\s@]+@gmail\.com$/i.test(email))
-    return showMessage("authMsg","Enter a Gmail address.");
-   if(password.length<8)
-    return showMessage("authMsg","Password must be at least 8 characters.");
-
-   $("registerBtn").disabled=true;
-   try{
-    await createUserWithEmailAndPassword(auth,email,password);
-    await registerProfile({name,phone,refCode});
-    await refresh();
-   }catch(e){showMessage("authMsg",errorMessage(e));}
-   finally{$("registerBtn").disabled=false;}
-  };
-
-  $("loginBtn").onclick=async()=>{
-   try{
-    await signInWithEmailAndPassword(auth,$("loginEmail").value.trim(),
-     $("loginPassword").value);
-   }catch(e){showMessage("authMsg",errorMessage(e));}
-  };
-  $("resetBtn").onclick=async()=>{
-   try{
-    await sendPasswordResetEmail(auth,$("loginEmail").value.trim());
-    showMessage("authMsg","Check your email for reset instructions.");
-   }catch(e){showMessage("authMsg",errorMessage(e));}
-  };
-  $("logoutBtn").onclick=()=>signOut(auth);
-
-  document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{
-   document.querySelectorAll(".tab").forEach(t=>t.classList.add("hidden"));
-   $(b.dataset.tab).classList.remove("hidden");
+  const led=await getDocs(query(collection(db,"walletLedger"),
+   where("uid","==",uid),orderBy("createdAt","desc"),limit(30)));
+  $("ledger").replaceChildren();
+  if(led.empty)$("ledger").textContent="No transactions yet.";
+  led.forEach(s=>{
+   const d=s.data(),el=document.createElement("div");
+   el.className="notice";
+   el.textContent=(d.description||d.type||"Transaction")+" · KSh "+
+    Number(d.amount||0)+" · "+(d.status||"recorded");
+   $("ledger").append(el);
   });
 
-  $("copyCode").onclick=async()=>{
-   const link=$("refLink").value;
-   try{
-    await navigator.clipboard.writeText(link);
-    showMessage("taskMsg","Referral link copied.");
-   }catch{prompt("Copy your link",link);}
-  };
-
-  const free=[
-   {text:"What is 12 × 3?",options:["24","36","42"]},
-   {text:"Which planet is called the Red Planet?",options:["Mars","Venus","Jupiter"]},
-   {text:"How many days are in a week?",options:["5","6","7"]},
-   {text:"Opposite of increase?",options:["Expand","Decrease","Multiply"]},
-   {text:"Which number is even?",options:["13","17","20"]}
-  ];
-  const extra=[
-   {text:"100 divided by 4?",options:["20","25","40"]},
-   {text:"Which device is used to type?",options:["Keyboard","Monitor","Speaker"]},
-   {text:"How many sides does a triangle have?",options:["2","3","4"]}
-  ];
-  let profile=null,answered=[],extraUnlocked=false;
-
-  async function refresh(){
-   if(!auth.currentUser)return;
-   const uid=auth.currentUser.uid;
-   const snap=await getDoc(doc(db,"users",uid));
-   if(!snap.exists()){
-    showMessage("authMsg","Your profile has not been created by the backend.");
-    return;
-   }
-   profile=snap.data();
-   $("auth").classList.add("hidden");
-   $("dashboard").classList.remove("hidden");
-   $("userName").textContent=profile.name||"Member";
-   $("userEmail").textContent=auth.currentUser.email||"";
-   $("balance").textContent="KSh "+Number(profile.balance||0).toLocaleString();
-   $("withdrawBalance").textContent=$("balance").textContent;
-   $("myCode").textContent=profile.referralCode||"";
-   $("refCount").textContent=profile.referralCount||0;
-   $("refLink").value=location.origin+location.pathname+
-    "?ref="+encodeURIComponent(profile.referralCode||"");
-
-   const led=await getDocs(query(collection(db,"walletLedger"),
-    where("uid","==",uid),orderBy("createdAt","desc"),limit(30)));
-   $("ledger").replaceChildren();
-   if(led.empty)$("ledger").textContent="No transactions yet.";
-   led.forEach(s=>{
-    const d=s.data(),el=document.createElement("div");
-    el.className="notice";
-    el.textContent=(d.description||d.type||"Transaction")+" · KSh "+
-     Number(d.amount||0)+" · "+(d.status||"recorded");
-    $("ledger").append(el);
-   });
-
-   const req=await getDocs(query(collection(db,"withdrawalRequests"),
-    where("uid","==",uid),orderBy("createdAt","desc"),limit(20)));
-   $("withdrawals").replaceChildren();
-   if(req.empty)$("withdrawals").textContent="No requests yet.";
-   req.forEach(s=>{
-    const d=s.data(),el=document.createElement("div");
-    el.className="notice";
-    el.textContent="KSh "+Number(d.amount||0)+" · "+(d.status||"pending");
-    $("withdrawals").append(el);
-   });
-
-   answered=profile.answeredQuestions||[];
-   extraUnlocked=!!profile.extraUnlocked;
-   renderQuestions();
-  }
-
-  function renderQuestions(){
-   $("taskProgress").textContent="Completed: "+answered.length+" / 5 free questions";
-   $("questions").replaceChildren();
-   free.forEach((q,i)=>{
-    const box=document.createElement("div");box.className="question";
-    const title=document.createElement("p");title.textContent=(i+1)+". "+q.text;
-    box.append(title);
-    q.options.forEach((op,j)=>{
-     const b=document.createElement("button");
-     b.className="secondary";b.textContent=op;
-     b.disabled=answered.includes(i);
-     b.onclick=async()=>{
-      b.disabled=true;
-      try{
-       const r=await answerQuestion({index:i,choice:j});
-       showMessage("taskMsg",r.data.message||"Answer recorded.");
-       await refresh();
-      }catch(e){b.disabled=false;showMessage("taskMsg",errorMessage(e));}
-     };
-     box.append(b);
-    });
-    $("questions").append(box);
-   });
-   $("extraStatus").textContent=extraUnlocked?
-    "Extra questions unlocked!":"Complete all five free questions first.";
-   $("extras").replaceChildren();
-   if(extraUnlocked)extra.forEach((q,i)=>{
-    const box=document.createElement("div");box.className="question";
-    const title=document.createElement("p");title.textContent=q.text;box.append(title);
-    q.options.forEach((op,j)=>{
-     const b=document.createElement("button");b.className="secondary";
-     b.textContent=op;
-     b.onclick=async()=>{
-      try{
-       const r=await answerQuestion({index:i,choice:j,extra:true});
-       showMessage("taskMsg",r.data.message||"Answer recorded.");
-      }catch(e){showMessage("taskMsg",errorMessage(e));}
-     };
-     box.append(b);
-    });
-    $("extras").append(box);
-   });
-  }
-
-  $("withdrawBtn").onclick=async()=>{
-   const amount=Number($("amount").value);
-   const phone=$("payoutPhone").value.trim();
-   if(!Number.isSafeInteger(amount)||amount<2000)
-    return showMessage("withdrawMsg","Minimum withdrawal is KSh 2,000.");
-   if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))
-    return showMessage("withdrawMsg","Enter a valid payout number.");
-   $("withdrawBtn").disabled=true;
-   try{
-    const r=await requestWithdrawal({amount,phone});
-    showMessage("withdrawMsg",r.data.message||"Request sent for review.");
-    await refresh();
-   }catch(e){showMessage("withdrawMsg",errorMessage(e));}
-   finally{$("withdrawBtn").disabled=false;}
-  };
-
-  onAuthStateChanged(auth,async user=>{
-   $("auth").classList.toggle("hidden",!!user);
-   $("dashboard").classList.toggle("hidden",!user);
-   if(user)try{await refresh();}catch(e){
-    showMessage("authMsg",errorMessage(e));
-   }
+  const req=await getDocs(query(collection(db,"withdrawalRequests"),
+   where("uid","==",uid),orderBy("createdAt","desc"),limit(20)));
+  $("withdrawals").replaceChildren();
+  if(req.empty)$("withdrawals").textContent="No requests yet.";
+  req.forEach(s=>{
+   const d=s.data(),el=document.createElement("div");
+   el.className="notice";
+   el.textContent="KSh "+Number(d.amount||0)+" · "+(d.status||"pending");
+   $("withdrawals").append(el);
   });
-
-  const ref=new URLSearchParams(location.search).get("ref");
-  if(ref)$("refCode").value=ref.toUpperCase();
-
- } catch(e) {
-  $("setupMsg").textContent="Firebase initialization failed: "+
-   (e?.message||"Check your configuration values.");
+  answered=profile.answeredQuestions||[];
+  extraUnlocked=!!profile.extraUnlocked;
+  renderQuestions();
  }
+
+ function renderQuestions(){
+  $("taskProgress").textContent="Completed: "+answered.length+" / 5 free questions";
+  $("questions").replaceChildren();
+  free.forEach((q,i)=>{
+   const box=document.createElement("div");box.className="question";
+   const title=document.createElement("p");title.textContent=(i+1)+". "+q.text;
+   box.append(title);
+   q.options.forEach((op,j)=>{
+    const b=document.createElement("button");
+    b.className="secondary";b.textContent=op;
+    b.disabled=answered.includes(i);
+    b.onclick=async()=>{
+     b.disabled=true;
+     try{
+      const r=await answerQuestion({index:i,choice:j});
+      msg("taskMsg",r.data.message||"Answer recorded.");
+      await refresh();
+     }catch(e){b.disabled=false;msg("taskMsg",errorText(e));}
+    };
+    box.append(b);
+   });
+   $("questions").append(box);
+  });
+  $("extraStatus").textContent=extraUnlocked?
+   "Extra questions unlocked!":"Complete all five free questions first.";
+  $("extras").replaceChildren();
+  if(extraUnlocked)extra.forEach((q,i)=>{
+   const box=document.createElement("div");box.className="question";
+   const title=document.createElement("p");title.textContent=q.text;box.append(title);
+   q.options.forEach((op,j)=>{
+    const b=document.createElement("button");b.className="secondary";
+    b.textContent=op;
+    b.onclick=async()=>{
+     try{
+      const r=await answerQuestion({index:i,choice:j,extra:true});
+      msg("taskMsg",r.data.message||"Answer recorded.");
+      await refresh();
+     }catch(e){msg("taskMsg",errorText(e));}
+    };
+    box.append(b);
+   });
+   $("extras").append(box);
+  });
+ }
+
+ $("withdrawBtn").onclick=async()=>{
+  const amount=Number($("amount").value);
+  const phone=$("payoutPhone").value.trim();
+  if(!Number.isSafeInteger(amount)||amount<2000)
+   return msg("withdrawMsg","Minimum withdrawal is KSh 2,000.");
+  if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))
+   return msg("withdrawMsg","Enter a valid payout phone number.");
+  $("withdrawBtn").disabled=true;
+  try{
+   const r=await requestWithdrawal({amount,phone});
+   msg("withdrawMsg",r.data.message||"Request submitted for review.");
+   await refresh();
+  }catch(e){msg("withdrawMsg",errorText(e));}
+  finally{$("withdrawBtn").disabled=false;}
+ };
+
+ onAuthStateChanged(auth,async user=>{
+  $("auth").classList.toggle("hidden",!!user);
+  $("dashboard").classList.toggle("hidden",!user);
+  if(user){
+   try{await refresh();}
+   catch(e){
+    $("setup").classList.remove("hidden");
+    msg("setupMsg",errorText(e));
+   }
+  }else{
+   $("setup").classList.add("hidden");
+   $("auth").classList.remove("hidden");
+  }
+ });
+ const referral=new URLSearchParams(location.search).get("ref");
+ if(referral)$("refCode").value=referral.toUpperCase();
+
+}catch(e){
+ $("setupMsg").textContent="Firebase error: "+errorText(e);
 }
 </script>
 </body>
- </html>
-                         
+  </html>
+ 
